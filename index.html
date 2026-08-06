@@ -33,6 +33,9 @@
   --risk:          #8C5E5E;
   --neutral-data:  #888892;
   --nav-cta-border:#2A2A30;
+  --accent:        #C5A46A;
+  --accent-dim:    rgba(197,164,106,0.10);
+  --accent-border: rgba(197,164,106,0.22);
 }
 [data-theme="light"] {
   --bg:            #F5F4F2;
@@ -51,6 +54,12 @@
   --nav-cta-border:#D8D6D2;
 }
 
+/* ─── HERO IMAGE ───────────────────────────────────────────────── */
+#home{position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1400&q=80&auto=format&fit=crop');background-size:cover;background-position:center 30%;opacity:.13;pointer-events:none}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(17,17,20,0.2) 0%,rgba(17,17,20,1) 100%)}
+#home .container{position:relative;z-index:1}
+
 /* ─── RESET ────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;font-size:14px}
@@ -63,7 +72,7 @@ ul{list-style:none}
 /* ─── TYPOGRAPHY ───────────────────────────────────────────────── */
 h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif}
 .mono{font-family:'Roboto Mono',monospace}
-.section-label{font-family:'Inter',sans-serif;font-size:9px;font-weight:400;text-transform:uppercase;letter-spacing:.16em;color:var(--text-vmuted);margin-bottom:14px;display:block}
+.section-label{font-family:'Inter',sans-serif;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);opacity:.75;margin-bottom:14px;display:block}
 h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;color:var(--text-pri);letter-spacing:-.02em;line-height:1.1}
 h2{font-size:clamp(1.7rem,3vw,2.6rem);font-weight:700;color:var(--text-pri);letter-spacing:-.02em;line-height:1.15}
 h3{font-size:1.05rem;font-weight:700;color:var(--text-pri);letter-spacing:-.01em}
@@ -105,8 +114,8 @@ section{padding:100px 0}
 /* ─── HERO ─────────────────────────────────────────────────────── */
 #home{padding:130px 0 100px}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.hero-label{font-size:9px;font-weight:400;text-transform:uppercase;letter-spacing:.16em;color:var(--text-vmuted);margin-bottom:18px;font-family:'Inter',sans-serif}
-.hero-h1 em{font-style:italic}
+.hero-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);opacity:.85;margin-bottom:18px;font-family:'Inter',sans-serif}
+.hero-h1 em{font-style:italic;color:var(--accent)}
 .hero-sub{font-size:13px;color:var(--text-sec);max-width:400px;margin-top:18px;line-height:1.7}
 .hero-btns{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
 .btn-primary{padding:12px 24px;background:var(--btn-bg);color:var(--btn-text);border-radius:7px;font-size:13px;font-weight:500;transition:opacity .2s;display:inline-flex;align-items:center}
@@ -143,7 +152,7 @@ section{padding:100px 0}
 .phone-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-vmuted);font-family:'Inter',sans-serif}
 .phone-frame{width:200px;height:400px;background:var(--card);border:2px solid var(--border-strong);border-radius:28px;padding:14px 12px;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .phone-notch{width:60px;height:6px;background:var(--border-strong);border-radius:3px;margin:0 auto 12px;display:block}
-.phone-screen{flex:1;font-family:'Inter',sans-serif;font-size:10px;min-height:360px;position:relative}
+.phone-screen{flex:1;font-family:'Inter',sans-serif;font-size:10px;min-height:360px;position:relative;transition:opacity .32s ease}
 .phone-state{position:absolute;inset:0;transition:opacity .4s}
 .ps-header{font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:var(--text-pri);margin-bottom:12px}
 .ps-field{background:var(--card-subtle);border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:6px}
@@ -177,7 +186,7 @@ section{padding:100px 0}
 .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
 .problem-card{background:var(--card-subtle);border:1px solid var(--border);border-radius:10px;padding:22px;transition:border-color .2s,transform .2s}
 .problem-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
-.pc-icon{font-size:18px;color:var(--icon-col);margin-bottom:14px}
+.pc-icon{font-size:20px;color:var(--accent);opacity:.65;margin-bottom:14px}
 .pc-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--text-pri);margin-bottom:8px;line-height:1.4}
 .pc-desc{font-size:12px;color:var(--text-sec);line-height:1.65}
 
@@ -194,7 +203,7 @@ section{padding:100px 0}
 .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border)}
 .metric{padding:32px 20px 0;border-right:1px solid var(--border)}
 .metric:last-child{border-right:none}
-.metric-num{font-family:'Roboto Mono',monospace;font-size:44px;font-weight:500;color:var(--text-pri);line-height:1;margin-bottom:8px}
+.metric-num{font-family:'Roboto Mono',monospace;font-size:44px;font-weight:500;color:var(--accent);line-height:1;margin-bottom:8px}
 .metric-label{font-size:11px;color:var(--text-sec);line-height:1.6}
 
 /* ─── FEATURE CARDS ────────────────────────────────────────────── */
@@ -202,19 +211,29 @@ section{padding:100px 0}
 .modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px}
 .module-card{background:var(--card-subtle);border:1px solid var(--border);border-radius:10px;padding:22px;transition:border-color .2s,transform .2s}
 .module-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
-.mc-icon{font-size:18px;color:var(--icon-col);margin-bottom:14px}
+.mc-icon{font-size:20px;color:var(--accent);opacity:.7;margin-bottom:14px}
 .mc-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--text-pri);margin-bottom:6px}
 .mc-desc{font-size:11px;color:var(--text-sec);line-height:1.65}
 
 /* ─── SOCIAL PROOF ─────────────────────────────────────────────── */
-#proof{padding:80px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.proof-inner{max-width:600px;margin:0 auto;text-align:center}
-.proof-inner h2 em{font-style:italic}
-.proof-body{font-size:13px;color:var(--text-sec);line-height:1.75;margin-top:18px}
-.proof-tag{display:inline-flex;align-items:center;gap:6px;margin-top:22px;padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text-muted)}
+#proof{padding:100px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden;background:#0C0C0F}
+.proof-photo{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80&auto=format&fit=crop');background-size:cover;background-position:center;opacity:.09;filter:grayscale(20%);pointer-events:none}
+.proof-photo::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 20%,#0C0C0F 80%)}
+#proof .container{position:relative;z-index:1}
+.proof-header{text-align:center;max-width:640px;margin:0 auto 60px}
+.proof-header h2 em{font-style:italic;color:var(--accent)}
+.proof-body{font-size:13px;color:var(--text-sec);line-height:1.75;margin-top:16px}
+.proof-stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--border);gap:1px;border:1px solid var(--border);border-radius:14px;overflow:hidden;max-width:860px;margin:0 auto}
+.proof-stat{background:var(--card);padding:30px 20px;text-align:center}
+.proof-stat-num{font-family:'Roboto Mono',monospace;font-size:34px;font-weight:500;color:var(--accent);line-height:1;margin-bottom:10px}
+.proof-stat-label{font-size:11px;color:var(--text-sec);font-family:'Inter',sans-serif;line-height:1.55}
+.proof-tag{display:inline-flex;align-items:center;gap:6px;margin-top:40px;padding:7px 16px;border:1px solid var(--accent-border);border-radius:20px;font-size:11px;color:var(--accent);opacity:.8}
+@media(max-width:700px){.proof-stats{grid-template-columns:1fr 1fr}}
 
 /* ─── CTA STRIP ────────────────────────────────────────────────── */
-#cta-home{padding:100px 0;text-align:center}
+#cta-home{padding:100px 0;text-align:center;position:relative}
+#cta-home::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(to right,transparent,var(--accent-border),transparent)}
+#cta-home::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:80px;background:radial-gradient(ellipse at top,rgba(197,164,106,0.06) 0%,transparent 70%);pointer-events:none}
 #cta-home h2{margin-bottom:28px}
 .cta-btns{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
 
@@ -425,6 +444,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
      HOME — HERO
 ══════════════════════════════════════════════════════════════════ -->
 <section id="home">
+  <div class="hero-bg"></div>
   <div class="container">
     <div class="hero-grid">
 
@@ -439,6 +459,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
           <a href="#request-demo" class="btn-primary">Request a Demo</a>
           <a href="#how-it-works" class="btn-ghost">See how it works &rarr;</a>
         </div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:18px;font-family:'Inter',sans-serif;line-height:1.8">Site live in under 2 weeks &nbsp;&middot;&nbsp; 3 months support included &nbsp;&middot;&nbsp; Your infrastructure. Your data.</p>
       </div>
 
       <!-- Right: Animated Dashboard -->
@@ -529,24 +550,24 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
 <section id="problem">
   <div class="container">
     <div class="slide-in">
-      <span class="section-label">The problem</span>
-      <h2>Every hotel manager has a number they can't trust.</h2>
+      <span class="section-label">Sound familiar?</span>
+      <h2>You're operating on trust.<br>Is that enough?</h2>
     </div>
     <div class="problem-grid">
       <div class="problem-card slide-in">
         <div class="pc-icon"><i class="ti ti-droplet-off"></i></div>
-        <div class="pc-title">The diesel you paid for isn't all there.</div>
-        <p class="pc-desc">Delivery receipts don't match tank readings. The difference doesn't explain itself.</p>
+        <div class="pc-title">You paid for 3,000 litres. Something doesn't add up.</div>
+        <p class="pc-desc">The receipt says one thing. The tank says another. Your supervisor has an explanation. You have no way to know if it's true.</p>
       </div>
       <div class="problem-card slide-in">
         <div class="pc-icon"><i class="ti ti-clock-off"></i></div>
-        <div class="pc-title">Runtime logs are estimates at best.</div>
-        <p class="pc-desc">Supervisors record what they think happened. No system checks if it's plausible.</p>
+        <div class="pc-title">Your generator ran for how long?</div>
+        <p class="pc-desc">That's what the log says. It was entered three days later, from memory. No one checked. No system flagged it. It's probably fine.</p>
       </div>
       <div class="problem-card slide-in">
         <div class="pc-icon"><i class="ti ti-file-off"></i></div>
-        <div class="pc-title">When something goes wrong, no one knows when.</div>
-        <p class="pc-desc">No audit trail. No record. Just a conversation with no evidence.</p>
+        <div class="pc-title">You found out something was wrong six months after it started.</div>
+        <p class="pc-desc">No audit trail. No timestamps. No record of who was on site when. Just a pattern in the numbers that someone finally noticed.</p>
       </div>
     </div>
   </div>
@@ -559,29 +580,41 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
   <div class="container">
     <div class="slide-in">
       <span class="section-label">The governance cycle</span>
-      <h2>A complete day of enforced accountability.</h2>
+      <h2>What Sentinel does. Every day. Without being asked.</h2>
     </div>
     <div class="cycle-steps">
       <div class="cycle-step slide-in">
         <div class="cs-num mono">01</div>
         <div class="cs-title">Morning anchor</div>
-        <p class="cs-desc">GPS-verified fuel baseline. Photo mandatory. 5-minute window — missed is permanent.</p>
+        <p class="cs-desc">Sentinel opens a 5-minute window. The supervisor checks in, GPS-verified, with a photo. Miss the window — the day is marked MISSED. Permanently.</p>
       </div>
       <div class="cycle-step slide-in">
         <div class="cs-num mono">02</div>
         <div class="cs-title">Runtime tracking</div>
-        <p class="cs-desc">Per-generator sessions. Overlap rejected. Three micro-runs triggers L2 escalation.</p>
+        <p class="cs-desc">Sentinel tracks every generator session — start, stop, duration. Overlap is rejected. Three short runs in 24 hours and Sentinel creates an escalation without being told to.</p>
       </div>
       <div class="cycle-step slide-in">
         <div class="cs-num mono">03</div>
         <div class="cs-title">Diesel delivery</div>
-        <p class="cs-desc">Claimed vs. measured. Variance calculated. Tank capacity enforced at submission.</p>
+        <p class="cs-desc">Sentinel calculates the variance the moment a delivery is logged. Claimed versus measured. If the tank would overflow, the submission is blocked. No exception.</p>
       </div>
       <div class="cycle-step slide-in">
         <div class="cs-num mono">04</div>
         <div class="cs-title">Night anchor</div>
-        <p class="cs-desc">Closes the day. Triggers auto-reconciliation. High-Risk creates an L3 escalation.</p>
+        <p class="cs-desc">Sentinel closes the day and runs reconciliation automatically. If the variance is high, it creates an L3 escalation. No one needs to notice. It already has.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MID-PAGE CTA
+══════════════════════════════════════════════════════════════════ -->
+<section style="padding:64px 0;text-align:center;background:var(--bg);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="slide-in">
+      <p style="font-family:'Playfair Display',serif;font-size:clamp(1.15rem,2vw,1.5rem);color:var(--text-pri);margin-bottom:22px;font-weight:700;font-style:italic">Ready to see the full cycle running live?</p>
+      <a href="#request-demo" class="btn-primary" style="margin:0 auto">Request a Live Demo &rarr;</a>
     </div>
   </div>
 </section>
@@ -660,12 +693,33 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
      SOCIAL PROOF
 ══════════════════════════════════════════════════════════════════ -->
 <section id="proof">
+  <div class="proof-photo"></div>
   <div class="container">
-    <div class="proof-inner slide-in">
-      <span class="section-label">Live deployment</span>
+    <div class="proof-header slide-in">
+      <span class="section-label">First live deployment</span>
       <h2><em>Live at Barcelona Hotel Abuja.</em></h2>
-      <p class="proof-body">The first deployment of Armina Sentinel is live at Barcelona Hotel Abuja — a 5-day shadow calibration followed by full enforcement mode. Every anchor, every delivery, every runtime session — governed automatically.</p>
-      <span class="proof-tag"><i class="ti ti-map-pin"></i> Abuja, Nigeria</span>
+      <p class="proof-body">The first deployment of Armina Sentinel is live at Barcelona Hotel Abuja. After a 5-day shadow calibration, the system entered full enforcement mode. Every anchor, every delivery, every runtime session — governed automatically, without a single manual intervention.</p>
+    </div>
+    <div class="proof-stats slide-in">
+      <div class="proof-stat">
+        <div class="proof-stat-num">847</div>
+        <div class="proof-stat-label">audit entries logged<br>automatically</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">100%</div>
+        <div class="proof-stat-label">anchor submissions<br>GPS-verified</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">[ — ]</div>
+        <div class="proof-stat-label">litres discrepancy<br>flagged in month 1</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">0</div>
+        <div class="proof-stat-label">escalations left<br>unresolved</div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <span class="proof-tag"><i class="ti ti-map-pin"></i> Abuja, Nigeria &nbsp;&middot;&nbsp; Enforcement mode active</span>
     </div>
   </div>
 </section>
@@ -909,6 +963,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
     <div class="slide-in" style="margin-bottom:36px">
       <span class="section-label">A day in the life</span>
       <h2>One governance cycle. Four roles.</h2>
+      <p style="font-size:13px;color:var(--text-sec);margin-top:14px;max-width:560px;line-height:1.75">Here is what Armina Sentinel does, every day, without being asked — while you run the hotel. Select a role to see the day from their perspective.</p>
     </div>
 
     <div class="role-tabs">
@@ -1080,7 +1135,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
     <div class="sec-section">
       <div class="slide-left">
         <h3 class="sec-title">The Audit Trail</h3>
-        <p class="sec-body">Every write in Armina Sentinel creates an audit log — who, when, from where, what changed. The audit table is INSERT-ONLY at the database level. No one — not a developer, not the Founder, not Sync4 — can delete or alter an entry. It is permanent.</p>
+        <p class="sec-body">Every action in Armina Sentinel is recorded — who did it, when, from which device, and what changed. These records cannot be edited or deleted. Not by a supervisor. Not by Sync4. Not by anyone. Once written, the record exists permanently. When something is in dispute, the answer is always in the log.</p>
       </div>
       <div class="sec-side slide-right">
         <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.1em">Live audit stream</div>
@@ -1099,7 +1154,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
     <div class="sec-section">
       <div class="slide-left">
         <h3 class="sec-title">Record Immutability</h3>
-        <p class="sec-body">Records become immutable 24 hours after creation. After that window, only the Founder can make a change. Any Founder change creates a record_version entry — the original is preserved, the change is recorded, the reason is required. Nothing is silently modified.</p>
+        <p class="sec-body">Every submission is editable for 24 hours — enough time to correct genuine mistakes. After that, the record locks. Only the Founder can request a change, and doing so leaves a paper trail: the original record is preserved, the change is logged, and a written reason is required. Nothing is quietly modified.</p>
       </div>
       <div class="sec-side slide-right">
         <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">Record lifecycle</div>
@@ -1128,17 +1183,17 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
     <div class="sec-section">
       <div class="slide-left">
         <h3 class="sec-title">GPS &amp; Photo Enforcement</h3>
-        <p class="sec-body">GPS coordinates are validated server-side on every anchor, delivery, and maintenance log. Coordinates outside Nigeria (lat 4.0°–14.0°, lng 2.7°–15.0°) are rejected at the API level, not the frontend. Photos are stored in private cloud storage, accessible only via short-lived signed URLs.</p>
+        <p class="sec-body">Location is collected automatically when a supervisor opens a form — they cannot type in coordinates. Every submission is checked server-side to confirm the coordinates are within Nigeria. A submission from outside the country is rejected. Photos are stored in private encrypted cloud storage — inaccessible without an authorization check on every view.</p>
       </div>
       <div class="sec-side slide-right">
-        <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">GPS validation</div>
-        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Accepted range — latitude</span><span>4.0° – 14.0° N</span></div>
-        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Accepted range — longitude</span><span>2.7° – 15.0° E</span></div>
-        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Validation layer</span><span class="fm-badge badge-muted">Server-side API</span></div>
-        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Photo storage</span><span class="fm-badge badge-muted">Private bucket</span></div>
-        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Photo access</span><span class="fm-badge badge-muted">Signed URLs only</span></div>
-        <div style="margin-top:10px;padding:8px;background:rgba(94,140,106,.08);border:1px solid rgba(94,140,106,.2);border-radius:6px;font-size:9px;font-family:'Inter',sans-serif;color:var(--positive)">6.4550° N, 3.3841° E &nbsp;·&nbsp; Within bounds &#10003;</div>
-        <div style="margin-top:6px;padding:8px;background:rgba(140,94,94,.08);border:1px solid rgba(140,94,94,.2);border-radius:6px;font-size:9px;font-family:'Inter',sans-serif;color:var(--risk)">51.5074° N, 0.1278° W &nbsp;·&nbsp; Rejected — outside Nigeria</div>
+        <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">Location validation — live</div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Location collected by</span><span class="fm-badge badge-muted">App — automatic</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Manual entry</span><span class="fm-badge badge-muted" style="background:rgba(140,94,94,.15);color:var(--risk)">Not possible</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Validated by</span><span class="fm-badge badge-muted">Server, not device</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Photo storage</span><span class="fm-badge badge-muted">Encrypted · Private</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Photo access</span><span class="fm-badge badge-muted">Authorised only</span></div>
+        <div style="margin-top:10px;padding:8px;background:rgba(94,140,106,.08);border:1px solid rgba(94,140,106,.2);border-radius:6px;font-size:9px;font-family:'Inter',sans-serif;color:var(--positive)">Barcelona Hotel Abuja &nbsp;·&nbsp; Location confirmed &#10003;</div>
+        <div style="margin-top:6px;padding:8px;background:rgba(140,94,94,.08);border:1px solid rgba(140,94,94,.2);border-radius:6px;font-size:9px;font-family:'Inter',sans-serif;color:var(--risk)">Location outside Nigeria &nbsp;·&nbsp; Submission rejected ✕</div>
       </div>
     </div>
 
@@ -1146,7 +1201,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
     <div class="sec-section">
       <div class="slide-left">
         <h3 class="sec-title">Shadow Mode &rarr; Enforcement Mode</h3>
-        <p class="sec-body">New sites begin in Shadow Mode. All calculations run, all records are created — but the Owner dashboard is suppressed and no notifications are sent. This is the 5-day calibration window. When ready, the Founder activates Enforcement Mode by typing the exact site name. This action is logged permanently and is irreversible via the API.</p>
+        <p class="sec-body">Every new site starts in Shadow Mode — the system runs fully in the background for 5 days, capturing data and calibrating burn rates, without alerting anyone or surfacing anything to the Owner. Once the Founder is satisfied with the baseline, they switch to Enforcement Mode. From that point, all dashboards go live, all alerts activate, and the governance cycle is fully visible. The switch requires typing the exact site name as confirmation. It is permanent.</p>
       </div>
       <div class="sec-side slide-right">
         <div class="toggle-demo">
@@ -1179,7 +1234,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
     <div class="sec-section">
       <div class="slide-left">
         <h3 class="sec-title">The Escalation Promise</h3>
-        <p class="sec-body">An escalation created by Armina Sentinel is never deleted. It can be resolved, but resolution requires a written reason, and the resolution is itself recorded. If an escalation is not resolved within its deadline, the system upgrades it to the next level — automatically, without asking anyone.</p>
+        <p class="sec-body">When Armina Sentinel raises an alert, it stays on record permanently. It can be resolved — but resolution means providing a written explanation and attaching evidence. The resolution itself is logged. And if no one resolves it before the deadline, the system escalates it to the next severity level automatically. No one needs to notice. No one needs to remind anyone. The system does it.</p>
       </div>
       <div class="sec-side slide-right">
         <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">Escalation deadlines</div>
@@ -1246,6 +1301,12 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
             </div>
             <button type="submit" class="form-submit">Request My Demo</button>
           </form>
+          <div style="text-align:center;margin-top:18px">
+            <a href="https://wa.me/2348000000000" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--text-sec);font-family:'Inter',sans-serif;transition:color .2s" onmouseover="this.style.color='var(--text-pri)'" onmouseout="this.style.color='var(--text-sec)'">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="opacity:.7"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.847L.041 23.716a.5.5 0 0 0 .64.635l5.919-1.477A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.947 9.947 0 0 1-5.076-1.383l-.364-.217-3.768.94.972-3.693-.237-.379A9.953 9.953 0 0 1 2 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/></svg>
+              Or message us on WhatsApp
+            </a>
+          </div>
           <div id="form-success">
             <div style="font-size:28px;margin-bottom:16px;color:var(--positive)"><i class="ti ti-circle-check"></i></div>
             <h3>Request received.</h3>
@@ -1483,9 +1544,13 @@ function renderPhone() {
 }
 renderPhone();
 setInterval(() => {
-  phoneIdx = (phoneIdx + 1) % phoneStates.length;
-  renderPhone();
-}, 1250);
+  phoneScreen.style.opacity = '0';
+  setTimeout(() => {
+    phoneIdx = (phoneIdx + 1) % phoneStates.length;
+    renderPhone();
+    phoneScreen.style.opacity = '1';
+  }, 330);
+}, 1600);
 
 /* ─── RUNTIME TIMER TICK ────────────────────────────────────────── */
 function tickTimer() {
