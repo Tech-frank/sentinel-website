@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Armina Sentinel — Generator Governance for Hotels</title>
+<meta name="description" content="Armina Sentinel is the enforcement engine that knows where the diesel is going — automatically, every day, without asking.">
+<meta property="og:title" content="Armina Sentinel — Generator Governance for Hotels">
+<meta property="og:description" content="The enforcement engine that tracks every litre, every runtime session, every delivery — automatically.">
+<meta property="og:image" content="og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Inter:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+/* ─── THEME TOKENS ─────────────────────────────────────────────── */
+:root {
+  --bg:            #111114;
+  --card:          #18181C;
+  --card-subtle:   #141418;
+  --border:        #1D1D22;
+  --border-strong: #242428;
+  --text-pri:      #FFFFFF;
+  --text-body:     #EFEFEF;
+  --text-sec:      #666672;
+  --text-muted:    #44444E;
+  --text-vmuted:   #2A2A30;
+  --btn-bg:        #FFFFFF;
+  --btn-text:      #111114;
+  --icon-col:      #33333D;
+  --positive:      #5E8C6A;
+  --caution:       #8C7A4D;
+  --risk:          #8C5E5E;
+  --neutral-data:  #888892;
+  --nav-cta-border:#2A2A30;
+}
+[data-theme="light"] {
+  --bg:            #F5F4F2;
+  --card:          #EEECEA;
+  --card-subtle:   #E8E6E3;
+  --border:        #D8D6D2;
+  --border-strong: #BBBBBB;
+  --text-pri:      #111114;
+  --text-body:     #222228;
+  --text-sec:      #666060;
+  --text-muted:    #999490;
+  --text-vmuted:   #B0ACA8;
+  --btn-bg:        #111114;
+  --btn-text:      #FFFFFF;
+  --icon-col:      #999490;
+  --nav-cta-border:#D8D6D2;
+}
+
+/* ─── RESET ────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:14px}
+body{background:var(--bg);color:var(--text-body);font-family:'Inter',sans-serif;transition:background .3s,color .3s;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
+
+/* ─── TYPOGRAPHY ───────────────────────────────────────────────── */
+h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif}
+.mono{font-family:'Roboto Mono',monospace}
+.section-label{font-family:'Inter',sans-serif;font-size:9px;font-weight:400;text-transform:uppercase;letter-spacing:.16em;color:var(--text-vmuted);margin-bottom:14px;display:block}
+h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;color:var(--text-pri);letter-spacing:-.02em;line-height:1.1}
+h2{font-size:clamp(1.7rem,3vw,2.6rem);font-weight:700;color:var(--text-pri);letter-spacing:-.02em;line-height:1.15}
+h3{font-size:1.05rem;font-weight:700;color:var(--text-pri);letter-spacing:-.01em}
+p{line-height:1.65}
+
+/* ─── LAYOUT ───────────────────────────────────────────────────── */
+.container{max-width:1080px;margin:0 auto;padding:0 24px}
+.container--wide{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:100px 0}
+.row{display:flex;align-items:center;gap:60px}
+.row--rev{flex-direction:row-reverse}
+.col{flex:1;min-width:0}
+
+/* ─── NAVBAR ───────────────────────────────────────────────────── */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:62px;display:flex;align-items:center;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+#navbar.scrolled{background:rgba(17,17,20,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--border)}
+[data-theme="light"] #navbar.scrolled{background:rgba(245,244,242,.88)}
+.nav-inner{width:100%;max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:32px}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--text-pri);letter-spacing:.04em;white-space:nowrap}
+.nav-links{display:flex;gap:28px;margin:0 auto}
+.nav-links a{font-size:12px;color:var(--text-sec);font-weight:400;transition:color .2s}
+.nav-links a:hover{color:var(--text-pri)}
+.nav-links a.active{color:var(--text-pri)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.theme-toggle{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:var(--text-sec);transition:color .2s;font-size:16px}
+.theme-toggle:hover{color:var(--text-pri)}
+.nav-cta{font-size:12px;font-weight:500;padding:7px 16px;border-radius:6px;border:1px solid var(--nav-cta-border);color:var(--text-body);transition:border-color .2s,color .2s}
+.nav-cta:hover{border-color:var(--text-sec);color:var(--text-pri)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;padding:4px;cursor:pointer}
+.nav-hamburger span{display:block;width:20px;height:1.5px;background:var(--text-sec);transition:.3s}
+
+/* ─── MOBILE MENU ──────────────────────────────────────────────── */
+#mobile-menu{display:none;position:fixed;inset:0;z-index:999;background:var(--bg);padding:80px 24px 40px;flex-direction:column;gap:32px}
+#mobile-menu.open{display:flex}
+#mobile-menu a{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--text-pri)}
+#mobile-menu .mob-close{position:absolute;top:20px;right:24px;font-size:22px;color:var(--text-sec)}
+#mobile-menu .mob-cta{margin-top:16px;padding:14px 24px;background:var(--btn-bg);color:var(--btn-text);border-radius:8px;font-size:15px;font-weight:600;text-align:center;font-family:'Inter',sans-serif}
+
+/* ─── HERO ─────────────────────────────────────────────────────── */
+#home{padding:130px 0 100px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-label{font-size:9px;font-weight:400;text-transform:uppercase;letter-spacing:.16em;color:var(--text-vmuted);margin-bottom:18px;font-family:'Inter',sans-serif}
+.hero-h1 em{font-style:italic}
+.hero-sub{font-size:13px;color:var(--text-sec);max-width:400px;margin-top:18px;line-height:1.7}
+.hero-btns{display:flex;align-items:center;gap:16px;margin-top:32px;flex-wrap:wrap}
+.btn-primary{padding:12px 24px;background:var(--btn-bg);color:var(--btn-text);border-radius:7px;font-size:13px;font-weight:500;transition:opacity .2s;display:inline-flex;align-items:center}
+.btn-primary:hover{opacity:.88}
+.btn-ghost{font-size:13px;color:var(--text-sec);font-weight:400;padding:12px 0;transition:color .2s}
+.btn-ghost:hover{color:var(--text-pri)}
+
+/* ─── HERO DASHBOARD CARD ──────────────────────────────────────── */
+.dashboard-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;font-family:'Roboto Mono',monospace}
+.dc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.dc-site{font-size:11px;color:var(--text-sec);font-family:'Inter',sans-serif}
+.dc-mode{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-sec);font-family:'Inter',sans-serif}
+.dc-dot{width:7px;height:7px;border-radius:50%;background:var(--positive);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.dc-score-label{font-size:9px;font-family:'Inter',sans-serif;color:var(--text-vmuted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.dc-score{font-size:42px;font-weight:500;color:var(--text-pri);line-height:1}
+.dc-bar-track{height:3px;background:var(--border);border-radius:2px;margin:10px 0 20px}
+.dc-bar-fill{height:100%;width:0%;border-radius:2px;background:var(--positive);transition:width 1.8s ease-out}
+.dc-rows{display:flex;flex-direction:column;gap:10px}
+.dc-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.dc-row:last-child{border-bottom:none;padding-bottom:0}
+.dc-row-label{color:var(--text-sec);font-family:'Inter',sans-serif}
+.dc-row-val{font-size:11px}
+.val-green{color:var(--positive)}
+.val-amber{color:var(--caution)}
+.val-muted{color:var(--neutral-data)}
+
+/* ─── DEMO SECTION (phone mockup) ──────────────────────────────── */
+#demo{padding:80px 0;background:var(--card-subtle);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.demo-headline{text-align:center;margin-bottom:52px}
+.demo-headline h2{font-size:2rem}
+.demo-layout{display:flex;justify-content:center;align-items:flex-start;gap:48px;flex-wrap:wrap}
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.phone-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-vmuted);font-family:'Inter',sans-serif}
+.phone-frame{width:200px;height:400px;background:var(--card);border:2px solid var(--border-strong);border-radius:28px;padding:14px 12px;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.phone-notch{width:60px;height:6px;background:var(--border-strong);border-radius:3px;margin:0 auto 12px;display:block}
+.phone-screen{flex:1;font-family:'Inter',sans-serif;font-size:10px;min-height:360px;position:relative}
+.phone-state{position:absolute;inset:0;transition:opacity .4s}
+.ps-header{font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:var(--text-pri);margin-bottom:12px}
+.ps-field{background:var(--card-subtle);border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:6px}
+.ps-field-label{font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.ps-field-val{font-size:10px;color:var(--text-pri);font-family:'Roboto Mono',monospace}
+.ps-field-val.gps-ok{color:var(--positive)}
+.ps-photo-thumb{width:100%;height:36px;background:var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-muted)}
+.ps-photo-thumb.loaded{background:#2a3020;color:var(--positive)}
+.ps-gen-row{display:flex;gap:4px;margin-top:4px}
+.ps-gen{flex:1;padding:5px;border-radius:4px;border:1px solid var(--border);font-size:8px;color:var(--neutral-data);text-align:center}
+.ps-gen.idle{border-color:var(--positive);color:var(--positive)}
+.ps-submit{margin-top:10px;width:100%;padding:8px;border-radius:6px;background:var(--border);color:var(--text-muted);text-align:center;font-size:10px;font-weight:500}
+.ps-submit.active{background:var(--text-pri);color:var(--bg)}
+.ps-success{text-align:center;padding:20px 8px}
+.ps-success-icon{font-size:24px;color:var(--positive);margin-bottom:8px}
+.ps-success-title{font-family:'Playfair Display',serif;font-size:13px;color:var(--text-pri);margin-bottom:6px}
+.ps-success-detail{font-size:9px;color:var(--text-sec);line-height:1.6}
+
+/* desktop audit card beside phone */
+.desk-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;width:260px;font-family:'Roboto Mono',monospace;font-size:10px;align-self:center}
+.desk-card-title{font-family:'Playfair Display',serif;font-size:12px;color:var(--text-pri);margin-bottom:14px;font-weight:700}
+.audit-entry{border-bottom:1px solid var(--border);padding:7px 0;display:flex;flex-direction:column;gap:3px}
+.audit-entry:last-child{border-bottom:none}
+.ae-time{color:var(--text-vmuted);font-size:9px}
+.ae-action{color:var(--text-pri);font-size:10px}
+.ae-meta{color:var(--text-sec);font-size:9px;font-family:'Inter',sans-serif}
+.ae-new{color:var(--positive)}
+
+/* ─── PROBLEM SECTION ──────────────────────────────────────────── */
+#problem{padding:100px 0}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.problem-card{background:var(--card-subtle);border:1px solid var(--border);border-radius:10px;padding:22px;transition:border-color .2s,transform .2s}
+.problem-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.pc-icon{font-size:18px;color:var(--icon-col);margin-bottom:14px}
+.pc-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--text-pri);margin-bottom:8px;line-height:1.4}
+.pc-desc{font-size:12px;color:var(--text-sec);line-height:1.65}
+
+/* ─── GOVERNANCE CYCLE ─────────────────────────────────────────── */
+#cycle{padding:100px 0;background:var(--card-subtle);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.cycle-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px}
+.cycle-step{padding:24px 20px 0 0;border-top:1px solid var(--border)}
+.cs-num{font-family:'Roboto Mono',monospace;font-size:13px;color:var(--text-vmuted);margin-bottom:10px}
+.cs-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--text-pri);margin-bottom:8px}
+.cs-desc{font-size:11px;color:var(--text-sec);line-height:1.7}
+
+/* ─── METRICS STRIP ────────────────────────────────────────────── */
+#metrics{padding:80px 0;background:var(--bg)}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border)}
+.metric{padding:32px 20px 0;border-right:1px solid var(--border)}
+.metric:last-child{border-right:none}
+.metric-num{font-family:'Roboto Mono',monospace;font-size:44px;font-weight:500;color:var(--text-pri);line-height:1;margin-bottom:8px}
+.metric-label{font-size:11px;color:var(--text-sec);line-height:1.6}
+
+/* ─── FEATURE CARDS ────────────────────────────────────────────── */
+#modules{padding:100px 0}
+.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px}
+.module-card{background:var(--card-subtle);border:1px solid var(--border);border-radius:10px;padding:22px;transition:border-color .2s,transform .2s}
+.module-card:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.mc-icon{font-size:18px;color:var(--icon-col);margin-bottom:14px}
+.mc-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--text-pri);margin-bottom:6px}
+.mc-desc{font-size:11px;color:var(--text-sec);line-height:1.65}
+
+/* ─── SOCIAL PROOF ─────────────────────────────────────────────── */
+#proof{padding:80px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.proof-inner{max-width:600px;margin:0 auto;text-align:center}
+.proof-inner h2 em{font-style:italic}
+.proof-body{font-size:13px;color:var(--text-sec);line-height:1.75;margin-top:18px}
+.proof-tag{display:inline-flex;align-items:center;gap:6px;margin-top:22px;padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text-muted)}
+
+/* ─── CTA STRIP ────────────────────────────────────────────────── */
+#cta-home{padding:100px 0;text-align:center}
+#cta-home h2{margin-bottom:28px}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+
+/* ─── FEATURES PAGE ────────────────────────────────────────────── */
+#features{padding:100px 0;border-top:1px solid var(--border)}
+.features-intro{text-align:center;margin-bottom:70px}
+.features-intro h2{margin-bottom:10px}
+.features-intro p{font-size:13px;color:var(--text-sec)}
+.feat-section{padding:60px 0;border-top:1px solid var(--border)}
+.feat-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.feat-text{}
+.feat-label{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--text-vmuted);font-family:'Inter',sans-serif;display:block;margin-bottom:10px}
+.feat-title{margin-bottom:8px}
+.feat-gap{font-size:12px;color:var(--text-sec);margin-bottom:18px;font-style:italic}
+.feat-bullets{display:flex;flex-direction:column;gap:9px}
+.feat-bullet{font-size:12px;color:var(--text-sec);padding-left:14px;position:relative;line-height:1.6}
+.feat-bullet::before{content:'—';position:absolute;left:0;color:var(--text-vmuted)}
+.feat-mockup{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;font-family:'Roboto Mono',monospace;font-size:11px;min-height:200px}
+.fm-title{font-family:'Playfair Display',serif;font-size:12px;color:var(--text-pri);margin-bottom:14px;font-weight:700}
+.fm-field{background:var(--card-subtle);border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px}
+.fm-label{font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.fm-val{font-size:13px;color:var(--text-pri)}
+.fm-val.ok{color:var(--positive)}
+.fm-val.warn{color:var(--caution)}
+.fm-timer{font-size:32px;font-weight:500;color:var(--text-pri);text-align:center;padding:12px 0}
+.fm-status-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:11px}
+.fm-status-row:last-child{border-bottom:none}
+.fm-badge{padding:3px 8px;border-radius:4px;font-size:10px;font-family:'Inter',sans-serif;font-weight:500}
+.badge-green{background:rgba(94,140,106,.15);color:var(--positive)}
+.badge-amber{background:rgba(140,122,77,.15);color:var(--caution)}
+.badge-red{background:rgba(140,94,94,.15);color:var(--risk)}
+.badge-muted{background:var(--border);color:var(--text-muted)}
+.fm-progress{height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
+.fm-progress-fill{height:100%;background:var(--positive);width:80%}
+.fm-variance{background:rgba(94,140,106,.08);border:1px solid rgba(94,140,106,.2);border-radius:6px;padding:10px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.fm-variance.high{background:rgba(140,122,77,.08);border-color:rgba(140,122,77,.2)}
+.fm-var-label{font-family:'Inter',sans-serif;color:var(--text-sec)}
+.fm-var-val{color:var(--positive)}
+.fm-var-val.warn{color:var(--caution)}
+.fm-lock-btn{margin-top:12px;width:100%;padding:9px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--text-sec);font-family:'Inter',sans-serif;font-size:11px;text-align:center;cursor:pointer;transition:.2s}
+.fm-lock-btn.ready{border-color:var(--text-pri);color:var(--text-pri)}
+.recon-state{padding:16px;border-radius:8px;text-align:center;margin-top:8px}
+.recon-state.normal{background:rgba(94,140,106,.1);border:1px solid rgba(94,140,106,.3)}
+.recon-state.variance{background:rgba(140,122,77,.1);border:1px solid rgba(140,122,77,.3)}
+.recon-state.highrisk{background:rgba(140,94,94,.1);border:1px solid rgba(140,94,94,.3)}
+.recon-val{font-size:26px;font-weight:500;margin-bottom:4px}
+.recon-state.normal .recon-val{color:var(--positive)}
+.recon-state.variance .recon-val{color:var(--caution)}
+.recon-state.highrisk .recon-val{color:var(--risk)}
+.recon-label{font-size:10px;font-family:'Inter',sans-serif;color:var(--text-sec)}
+.esc-card{border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;transition:.3s}
+.esc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.esc-level{font-size:12px;font-weight:500;color:var(--risk)}
+.esc-deadline{font-size:10px;color:var(--text-muted);font-family:'Inter',sans-serif}
+.esc-desc{font-size:10px;color:var(--text-sec);font-family:'Inter',sans-serif;margin-bottom:8px}
+.esc-upgrade{font-size:9px;color:var(--caution);font-family:'Inter',sans-serif;padding:4px 8px;border:1px solid rgba(140,122,77,.3);border-radius:4px;display:inline-block}
+
+/* ─── SLIDE-IN ANIMATION ───────────────────────────────────────── */
+.slide-in{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.slide-in.visible{opacity:1;transform:none}
+.slide-left{opacity:0;transform:translateX(-32px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.slide-right{opacity:0;transform:translateX(32px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.slide-left.visible,.slide-right.visible{opacity:1;transform:none}
+
+/* ─── HOW IT WORKS ─────────────────────────────────────────────── */
+#how-it-works{padding:100px 0;border-top:1px solid var(--border)}
+.role-tabs{display:flex;gap:6px;margin-bottom:50px;flex-wrap:wrap}
+.role-tab{padding:8px 18px;border-radius:20px;font-size:12px;font-family:'Inter',sans-serif;font-weight:500;color:var(--text-muted);cursor:pointer;border:1px solid transparent;transition:.2s}
+.role-tab.active{background:var(--card);border-color:var(--border-strong);color:var(--text-pri)}
+.role-content{display:none}
+.role-content.active{display:block}
+.hiw-step{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:48px 0;border-top:1px solid var(--border)}
+.hiw-step:first-child{border-top:none;padding-top:0}
+.hiw-step-label{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--text-vmuted);font-family:'Inter',sans-serif;margin-bottom:8px}
+.hiw-step-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--text-pri);margin-bottom:12px;font-weight:700}
+.hiw-step-body{font-size:12px;color:var(--text-sec);line-height:1.75}
+.hiw-mock{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;font-family:'Roboto Mono',monospace;font-size:11px}
+
+/* ─── SECURITY PAGE ────────────────────────────────────────────── */
+#security{padding:100px 0;border-top:1px solid var(--border)}
+.sec-section{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;padding:60px 0;border-top:1px solid var(--border)}
+.sec-section:first-of-type{border-top:none;padding-top:0}
+.sec-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--text-pri);margin-bottom:14px;font-weight:700}
+.sec-body{font-size:12px;color:var(--text-sec);line-height:1.75}
+.sec-side{background:var(--card-subtle);border:1px solid var(--border);border-radius:10px;padding:18px;font-family:'Roboto Mono',monospace;font-size:10px}
+.audit-stream{display:flex;flex-direction:column;gap:0;max-height:180px;overflow:hidden}
+.audit-row{padding:7px 0;border-bottom:1px solid var(--border);font-size:9px;line-height:1.5}
+.audit-row:last-child{border-bottom:none}
+.ar-ts{color:var(--text-vmuted);font-family:'Inter',sans-serif}
+.ar-action{color:var(--text-pri)}
+.ar-who{color:var(--text-muted);font-family:'Inter',sans-serif}
+.ar-new{color:var(--positive)}
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:12px;padding-bottom:14px;position:relative}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--border-strong);flex-shrink:0;margin-top:4px;position:relative;z-index:1}
+.tl-dot.locked{background:var(--text-muted)}
+.tl-dot.override{background:var(--caution)}
+.tl-line{position:absolute;left:3.5px;top:12px;bottom:-14px;width:1px;background:var(--border)}
+.tl-item:last-child .tl-line{display:none}
+.tl-label{font-size:9px;font-family:'Inter',sans-serif;color:var(--text-sec);line-height:1.6}
+.tl-label strong{color:var(--text-pri);font-family:'Roboto Mono',monospace;font-size:10px}
+.toggle-demo{display:flex;flex-direction:column;gap:8px}
+.td-row{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:6px;border:1px solid var(--border)}
+.td-label{font-family:'Inter',sans-serif;font-size:11px;color:var(--text-sec)}
+.td-badge{padding:3px 10px;border-radius:4px;font-size:9px;font-family:'Inter',sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.td-badge.shadow{background:var(--border);color:var(--text-muted)}
+.td-badge.enforce{background:rgba(94,140,106,.2);color:var(--positive)}
+.esc-timeline{display:flex;flex-direction:column;gap:0}
+.et-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.et-row:last-child{border-bottom:none}
+.et-level{font-weight:500;font-size:11px;width:24px;color:var(--risk)}
+.et-bar{flex:1;height:3px;border-radius:2px;background:var(--border)}
+.et-bar-fill{height:100%;border-radius:2px;background:var(--risk)}
+.et-time{font-size:9px;color:var(--text-muted);font-family:'Inter',sans-serif;white-space:nowrap}
+
+/* ─── DEMO FORM ────────────────────────────────────────────────── */
+#request-demo{padding:100px 0;border-top:1px solid var(--border)}
+.demo-layout-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start}
+.demo-form-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-field{display:flex;flex-direction:column;gap:6px}
+.form-field.full{grid-column:1/-1}
+.form-label{font-size:11px;font-family:'Inter',sans-serif;color:var(--text-sec)}
+.form-input{background:var(--card-subtle);border:1px solid var(--border);border-radius:7px;padding:11px 14px;font-size:13px;color:var(--text-pri);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--text-sec)}
+.form-input::placeholder{color:var(--text-vmuted)}
+select.form-input option{background:var(--card)}
+textarea.form-input{resize:vertical;min-height:90px;line-height:1.6}
+.form-submit{width:100%;padding:13px;background:var(--btn-bg);color:var(--btn-text);border-radius:7px;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;border:none;cursor:pointer;transition:opacity .2s;margin-top:8px}
+.form-submit:hover{opacity:.88}
+#form-success{display:none;text-align:center;padding:40px 20px}
+#form-success h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--text-pri);margin-bottom:12px}
+#form-success p{font-size:13px;color:var(--text-sec);line-height:1.7}
+.trust-signals{display:flex;flex-direction:column;gap:24px;padding-top:12px}
+.trust-item{display:flex;gap:14px;align-items:flex-start}
+.ti-icon{font-size:18px;color:var(--icon-col);flex-shrink:0;padding-top:1px}
+.ti-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--text-pri);margin-bottom:4px}
+.ti-desc{font-size:12px;color:var(--text-sec);line-height:1.6}
+
+/* ─── FOOTER ───────────────────────────────────────────────────── */
+footer{padding:40px 0;border-top:1px solid var(--border)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:var(--text-pri)}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:var(--text-sec);transition:color .2s}
+.footer-links a:hover{color:var(--text-pri)}
+.footer-credit{font-size:11px;color:var(--text-vmuted)}
+
+/* ─── RESPONSIVE ───────────────────────────────────────────────── */
+@media(max-width:900px){
+  .hero-grid,.feat-row,.hiw-step,.sec-section,.demo-layout-grid{grid-template-columns:1fr}
+  .problem-grid,.cycle-steps,.modules-grid,.metrics-grid{grid-template-columns:1fr 1fr}
+  .row,.row--rev{flex-direction:column;gap:32px}
+  .form-grid{grid-template-columns:1fr}
+  .nav-links,.nav-right .nav-cta,.nav-right .theme-toggle{display:none}
+  .nav-hamburger{display:flex}
+  .feat-row.rev{direction:ltr}
+  .demo-layout{flex-direction:column;align-items:center}
+}
+@media(max-width:600px){
+  .problem-grid,.cycle-steps,.modules-grid,.metrics-grid{grid-template-columns:1fr}
+  section{padding:70px 0}
+  h1{font-size:2rem}
+  h2{font-size:1.6rem}
+  .metric-num{font-size:32px}
+  .hero-btns{flex-direction:column;align-items:flex-start}
+  .footer-inner{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">ARMINA SENTINEL</a>
+    <ul class="nav-links">
+      <li><a href="#features" data-nav="features">Features</a></li>
+      <li><a href="#how-it-works" data-nav="how-it-works">How It Works</a></li>
+      <li><a href="#security" data-nav="security">Security</a></li>
+      <li><a href="#request-demo" data-nav="request-demo">Request Demo</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <i class="ti ti-moon" id="theme-icon"></i>
+      </button>
+      <a href="#request-demo" class="nav-cta">Request Demo</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu">
+  <button class="mob-close" id="mob-close" aria-label="Close menu"><i class="ti ti-x"></i></button>
+  <a href="#features" class="mob-link">Features</a>
+  <a href="#how-it-works" class="mob-link">How It Works</a>
+  <a href="#security" class="mob-link">Security</a>
+  <a href="#request-demo" class="mob-link mob-cta">Request Demo</a>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HOME — HERO
+══════════════════════════════════════════════════════════════════ -->
+<section id="home">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Left: Copy -->
+      <div>
+        <span class="hero-label">Generator governance for hotels</span>
+        <h1 class="hero-h1">
+          Your generators<br>are running.<br><em>Where is the<br>diesel going?</em>
+        </h1>
+        <p class="hero-sub">Armina Sentinel is the enforcement engine that knows — automatically, every day, without asking.</p>
+        <div class="hero-btns">
+          <a href="#request-demo" class="btn-primary">Request a Demo</a>
+          <a href="#how-it-works" class="btn-ghost">See how it works &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Right: Animated Dashboard -->
+      <div>
+        <div class="dashboard-card">
+          <div class="dc-header">
+            <span class="dc-site">Barcelona Hotel &middot; <span id="dc-date"></span></span>
+            <div class="dc-mode"><span class="dc-dot"></span> Enforcement</div>
+          </div>
+          <div class="dc-score-label">Risk Score</div>
+          <div class="dc-score mono"><span id="dc-score">0</span></div>
+          <div class="dc-bar-track"><div class="dc-bar-fill" id="dc-bar"></div></div>
+          <div class="dc-rows">
+            <div class="dc-row"><span class="dc-row-label">Reconciliation</span><span class="dc-row-val mono val-green">Normal &middot; 4.2%</span></div>
+            <div class="dc-row"><span class="dc-row-label">Escalations</span><span class="dc-row-val mono val-muted">0 open</span></div>
+            <div class="dc-row"><span class="dc-row-label">Generator status</span><span class="dc-row-val mono val-muted">2 idle &middot; 1 active</span></div>
+            <div class="dc-row"><span class="dc-row-label">Last delivery</span><span class="dc-row-val mono val-amber">&Delta; 2.4% variance</span></div>
+            <div class="dc-row"><span class="dc-row-label">Audit trail</span><span class="dc-row-val mono val-muted">847 entries &middot; immutable</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     DEMO SECTION — Phone Mockup
+══════════════════════════════════════════════════════════════════ -->
+<section id="demo">
+  <div class="container">
+    <div class="demo-headline slide-in">
+      <span class="section-label">Product preview</span>
+      <h2>Armina Sentinel on your site.</h2>
+    </div>
+    <div class="demo-layout">
+      <!-- Phone mockup -->
+      <div class="phone-wrap">
+        <span class="phone-label">Supervisor &middot; Mobile</span>
+        <div class="phone-frame">
+          <span class="phone-notch"></span>
+          <div class="phone-screen" id="phone-screen">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+      </div>
+      <!-- Desktop audit card -->
+      <div class="phone-wrap">
+        <span class="phone-label">Founder Panel &middot; Audit Log</span>
+        <div class="desk-card">
+          <div class="desk-card-title">Live Audit Trail</div>
+          <div class="audit-stream" id="audit-stream">
+            <div class="audit-entry">
+              <span class="ae-time">06:01:44</span>
+              <span class="ae-action">anchor.create</span>
+              <span class="ae-meta">Supervisor &middot; Morning &middot; Barcelona Hotel</span>
+            </div>
+            <div class="audit-entry ae-new">
+              <span class="ae-time">06:03:12</span>
+              <span class="ae-action ae-new">anchor.create &#8679; NEW</span>
+              <span class="ae-meta">Supervisor &middot; Morning &middot; Barcelona Hotel</span>
+            </div>
+            <div class="audit-entry">
+              <span class="ae-time">06:03:12</span>
+              <span class="ae-action">reconciliation.check</span>
+              <span class="ae-meta">System &middot; Auto-triggered</span>
+            </div>
+            <div class="audit-entry">
+              <span class="ae-time">05:44:22</span>
+              <span class="ae-action">runtime.stop</span>
+              <span class="ae-meta">Supervisor &middot; Gen B &middot; 4h 12m</span>
+            </div>
+            <div class="audit-entry">
+              <span class="ae-time">01:29:08</span>
+              <span class="ae-action">delivery.create</span>
+              <span class="ae-meta">Supervisor &middot; 2,800 L claimed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PROBLEM SECTION
+══════════════════════════════════════════════════════════════════ -->
+<section id="problem">
+  <div class="container">
+    <div class="slide-in">
+      <span class="section-label">The problem</span>
+      <h2>Every hotel manager has a number they can't trust.</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card slide-in">
+        <div class="pc-icon"><i class="ti ti-droplet-off"></i></div>
+        <div class="pc-title">The diesel you paid for isn't all there.</div>
+        <p class="pc-desc">Delivery receipts don't match tank readings. The difference doesn't explain itself.</p>
+      </div>
+      <div class="problem-card slide-in">
+        <div class="pc-icon"><i class="ti ti-clock-off"></i></div>
+        <div class="pc-title">Runtime logs are estimates at best.</div>
+        <p class="pc-desc">Supervisors record what they think happened. No system checks if it's plausible.</p>
+      </div>
+      <div class="problem-card slide-in">
+        <div class="pc-icon"><i class="ti ti-file-off"></i></div>
+        <div class="pc-title">When something goes wrong, no one knows when.</div>
+        <p class="pc-desc">No audit trail. No record. Just a conversation with no evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     GOVERNANCE CYCLE — 4 Steps
+══════════════════════════════════════════════════════════════════ -->
+<section id="cycle">
+  <div class="container">
+    <div class="slide-in">
+      <span class="section-label">The governance cycle</span>
+      <h2>A complete day of enforced accountability.</h2>
+    </div>
+    <div class="cycle-steps">
+      <div class="cycle-step slide-in">
+        <div class="cs-num mono">01</div>
+        <div class="cs-title">Morning anchor</div>
+        <p class="cs-desc">GPS-verified fuel baseline. Photo mandatory. 5-minute window — missed is permanent.</p>
+      </div>
+      <div class="cycle-step slide-in">
+        <div class="cs-num mono">02</div>
+        <div class="cs-title">Runtime tracking</div>
+        <p class="cs-desc">Per-generator sessions. Overlap rejected. Three micro-runs triggers L2 escalation.</p>
+      </div>
+      <div class="cycle-step slide-in">
+        <div class="cs-num mono">03</div>
+        <div class="cs-title">Diesel delivery</div>
+        <p class="cs-desc">Claimed vs. measured. Variance calculated. Tank capacity enforced at submission.</p>
+      </div>
+      <div class="cycle-step slide-in">
+        <div class="cs-num mono">04</div>
+        <div class="cs-title">Night anchor</div>
+        <p class="cs-desc">Closes the day. Triggers auto-reconciliation. High-Risk creates an L3 escalation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     METRICS STRIP
+══════════════════════════════════════════════════════════════════ -->
+<section id="metrics">
+  <div class="container--wide">
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-num mono" data-target="100" data-suffix="%">0%</div>
+        <p class="metric-label">of submissions<br>GPS-verified</p>
+      </div>
+      <div class="metric">
+        <div class="metric-num mono" data-target="0" data-suffix="">0</div>
+        <p class="metric-label">escalations<br>ever deleted</p>
+      </div>
+      <div class="metric">
+        <div class="metric-num mono" data-prefix="&lt;&nbsp;" data-target="12" data-suffix="%">&lt;&nbsp;12%</div>
+        <p class="metric-label">variance triggers<br>auto-escalation</p>
+      </div>
+      <div class="metric">
+        <div class="metric-num mono" data-target="24" data-suffix="h">0h</div>
+        <p class="metric-label">before a record<br>becomes immutable</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FEATURE MODULES — 6 Cards
+══════════════════════════════════════════════════════════════════ -->
+<section id="modules">
+  <div class="container">
+    <div class="slide-in">
+      <span class="section-label">Enforcement modules</span>
+      <h2>Six layers. No gaps.</h2>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card slide-in">
+        <div class="mc-icon"><i class="ti ti-anchor"></i></div>
+        <div class="mc-title">Morning &amp; Night Anchors</div>
+        <p class="mc-desc">GPS-verified fuel checkpoints open and close every operational day. Photo mandatory. Grace period: 5 minutes.</p>
+      </div>
+      <div class="module-card slide-in">
+        <div class="mc-icon"><i class="ti ti-clock"></i></div>
+        <div class="mc-title">Runtime Tracking</div>
+        <p class="mc-desc">Session-based per generator. Overlapping sessions rejected. Three micro-runs trigger automatic escalation.</p>
+      </div>
+      <div class="module-card slide-in">
+        <div class="mc-icon"><i class="ti ti-droplet"></i></div>
+        <div class="mc-title">Diesel Delivery Logging</div>
+        <p class="mc-desc">Claimed vs. measured, both required. Variance auto-calculated. Tank capacity enforced — no overflows accepted.</p>
+      </div>
+      <div class="module-card slide-in">
+        <div class="mc-icon"><i class="ti ti-flame"></i></div>
+        <div class="mc-title">Burn Rate Calibration</div>
+        <p class="mc-desc">5-day baseline before Founder locks the rate. Monthly drift monitored — advisory only, no silent auto-adjustment.</p>
+      </div>
+      <div class="module-card slide-in">
+        <div class="mc-icon"><i class="ti ti-chart-bar"></i></div>
+        <div class="mc-title">Daily Reconciliation</div>
+        <p class="mc-desc">Triggered automatically by night anchor. Normal &lt;7%. Variance 7–12%. High-Risk ≥12% creates immediate L3 escalation.</p>
+      </div>
+      <div class="module-card slide-in">
+        <div class="mc-icon"><i class="ti ti-alert-triangle"></i></div>
+        <div class="mc-title">5-Level Escalation Engine</div>
+        <p class="mc-desc">L1 through L5. Auto-upgrades if unresolved past deadline. Never deleted. Resolution requires written evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SOCIAL PROOF
+══════════════════════════════════════════════════════════════════ -->
+<section id="proof">
+  <div class="container">
+    <div class="proof-inner slide-in">
+      <span class="section-label">Live deployment</span>
+      <h2><em>Live at Barcelona Hotel Abuja.</em></h2>
+      <p class="proof-body">The first deployment of Armina Sentinel is live at Barcelona Hotel Abuja — a 5-day shadow calibration followed by full enforcement mode. Every anchor, every delivery, every runtime session — governed automatically.</p>
+      <span class="proof-tag"><i class="ti ti-map-pin"></i> Abuja, Nigeria</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FINAL CTA STRIP
+══════════════════════════════════════════════════════════════════ -->
+<section id="cta-home">
+  <div class="container">
+    <div class="slide-in">
+      <h2>Stop guessing.<br>Start governing.</h2>
+      <div class="cta-btns" style="margin-top:28px">
+        <a href="#request-demo" class="btn-primary">Request a Demo</a>
+        <a href="#features" class="btn-ghost">See the features &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FEATURES PAGE — 6 Alternating Sections
+══════════════════════════════════════════════════════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="features-intro slide-in">
+      <span class="section-label">All six modules</span>
+      <h2>Not a dashboard. An enforcement engine.</h2>
+      <p>Every module closes a specific accountability gap.</p>
+    </div>
+
+    <!-- Feature 1: Anchors -->
+    <div class="feat-section">
+      <div class="feat-row">
+        <div class="feat-text slide-left">
+          <span class="feat-label">Module 01</span>
+          <h3 class="feat-title">Morning &amp; Night Anchors</h3>
+          <p class="feat-gap">No verified daily fuel baseline.</p>
+          <div class="feat-bullets">
+            <p class="feat-bullet">Morning and night GPS-verified fuel checkpoint</p>
+            <p class="feat-bullet">Photo evidence mandatory — no photo, no submission</p>
+            <p class="feat-bullet">5-minute grace window — after that, the day is permanently marked MISSED</p>
+            <p class="feat-bullet">Duplicate anchors rejected by database unique constraint</p>
+          </div>
+        </div>
+        <div class="feat-mockup slide-right">
+          <div class="fm-title">Morning Anchor</div>
+          <div class="fm-field">
+            <div class="fm-label">GPS Location</div>
+            <div class="fm-val ok">6.4550° N, 3.3841° E &nbsp;&#10003; Verified</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">Photo Evidence</div>
+            <div class="fm-val ok">&#128247; gauge_0603.jpg attached</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">Generator Status</div>
+            <div class="fm-val ok">Gen A — Idle &#10003;&nbsp;&nbsp;Gen B — Idle &#10003;</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">Fuel Reading</div>
+            <div class="fm-val">2,450 L</div>
+          </div>
+          <div style="margin-top:12px;padding:9px;border-radius:6px;background:var(--text-pri);color:var(--bg);text-align:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:500">Submit Anchor</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Runtime -->
+    <div class="feat-section">
+      <div class="feat-row rev" style="direction:rtl">
+        <div class="feat-text slide-right" style="direction:ltr">
+          <span class="feat-label">Module 02</span>
+          <h3 class="feat-title">Runtime Tracking</h3>
+          <p class="feat-gap">Unverifiable generator runtime logs.</p>
+          <div class="feat-bullets">
+            <p class="feat-bullet">Session-based per generator — start time, stop time, duration calculated</p>
+            <p class="feat-bullet">Two active sessions for the same generator: rejected at submission</p>
+            <p class="feat-bullet">Three micro-runs under 10 minutes in 24h → automatic L2 RUNTIME_INSTABILITY escalation</p>
+            <p class="feat-bullet">Manual override requires written reason and 2-step confirmation</p>
+          </div>
+        </div>
+        <div class="feat-mockup slide-left" style="direction:ltr">
+          <div class="fm-title">Active Runtime Session</div>
+          <div class="fm-status-row">
+            <span>Generator</span><span class="mono">Gen B</span>
+          </div>
+          <div class="fm-status-row">
+            <span>Status</span><span class="fm-badge badge-green">ACTIVE</span>
+          </div>
+          <div class="fm-status-row">
+            <span>Started</span><span class="mono">14:22:08</span>
+          </div>
+          <div class="fm-timer mono" id="runtime-timer">3:24:17</div>
+          <div class="fm-progress"><div class="fm-progress-fill" style="width:72%"></div></div>
+          <div style="font-size:9px;color:var(--text-muted);font-family:'Inter',sans-serif;margin-top:6px">Daily target: 4.75h &nbsp;·&nbsp; 72% complete</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Deliveries -->
+    <div class="feat-section">
+      <div class="feat-row">
+        <div class="feat-text slide-left">
+          <span class="feat-label">Module 03</span>
+          <h3 class="feat-title">Diesel Delivery Logging</h3>
+          <p class="feat-gap">Supplier over-claims go undetected.</p>
+          <div class="feat-bullets">
+            <p class="feat-bullet">Claimed litres vs. measured litres — both required, logged separately</p>
+            <p class="feat-bullet">Variance calculated automatically: (measured − claimed) ÷ claimed × 100</p>
+            <p class="feat-bullet">Post-delivery level cannot exceed tank capacity — blocked at submission</p>
+            <p class="feat-bullet">GPS + photo mandatory on every delivery</p>
+          </div>
+        </div>
+        <div class="feat-mockup slide-right">
+          <div class="fm-title">Diesel Delivery</div>
+          <div class="fm-field">
+            <div class="fm-label">Claimed delivery (litres)</div>
+            <div class="fm-val">3,000 L</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">Measured (post − pre)</div>
+            <div class="fm-val">2,928 L</div>
+          </div>
+          <div class="fm-variance">
+            <span class="fm-var-label">Live variance</span>
+            <span class="fm-var-val">2.4% &nbsp;&#10003; Within tolerance</span>
+          </div>
+          <div class="fm-field" style="margin-top:8px">
+            <div class="fm-label">GPS</div>
+            <div class="fm-val ok">6.4550° N, 3.3841° E &nbsp;&#10003;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4: Burn Rate -->
+    <div class="feat-section">
+      <div class="feat-row rev" style="direction:rtl">
+        <div class="feat-text slide-right" style="direction:ltr">
+          <span class="feat-label">Module 04</span>
+          <h3 class="feat-title">Burn Rate Calibration</h3>
+          <p class="feat-gap">No baseline to measure actual consumption against.</p>
+          <div class="feat-bullets">
+            <p class="feat-bullet">5 baseline observation days required before Founder can lock</p>
+            <p class="feat-bullet">Founder-only lock — cannot be changed by Supervisor or Owner</p>
+            <p class="feat-bullet">Monthly drift monitored: alert if 30-day rolling rate deviates ≥10% — advisory only</p>
+            <p class="feat-bullet">No silent auto-adjustment, ever</p>
+          </div>
+        </div>
+        <div class="feat-mockup slide-left" style="direction:ltr">
+          <div class="fm-title">Burn Rate Configuration</div>
+          <div class="fm-status-row">
+            <span>Baseline days</span><span class="mono val-green">5 / 5 complete</span>
+          </div>
+          <div class="fm-status-row">
+            <span>Calibrated rate</span><span class="mono">18.4 L / hr</span>
+          </div>
+          <div class="fm-status-row">
+            <span>Status</span><span class="fm-badge badge-amber">UNLOCKED</span>
+          </div>
+          <div class="fm-status-row">
+            <span>30-day drift</span><span class="mono val-muted">+3.2% &nbsp;·&nbsp; Advisory</span>
+          </div>
+          <button class="fm-lock-btn ready">Lock Burn Rate &mdash; Founder Only</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 5: Reconciliation -->
+    <div class="feat-section">
+      <div class="feat-row">
+        <div class="feat-text slide-left">
+          <span class="feat-label">Module 05</span>
+          <h3 class="feat-title">Daily Reconciliation</h3>
+          <p class="feat-gap">Daily fuel discrepancies go unnoticed.</p>
+          <div class="feat-bullets">
+            <p class="feat-bullet">Triggered automatically by every night anchor</p>
+            <p class="feat-bullet">Below 7%: Normal — sage green indicator</p>
+            <p class="feat-bullet">7–12%: Variance alert — amber indicator</p>
+            <p class="feat-bullet">Above 12%: High-Risk — L3 escalation auto-created immediately</p>
+          </div>
+        </div>
+        <div class="feat-mockup slide-right">
+          <div class="fm-title">Night Reconciliation</div>
+          <div class="fm-status-row">
+            <span>Operational day</span><span class="mono">Aug 06, 2026</span>
+          </div>
+          <div class="fm-status-row">
+            <span>Expected consumption</span><span class="mono">87.2 L</span>
+          </div>
+          <div class="fm-status-row">
+            <span>Actual consumption</span><span class="mono">91.6 L</span>
+          </div>
+          <div class="recon-state normal" id="recon-display">
+            <div class="recon-val mono">5.1%</div>
+            <div class="recon-label">Normal &mdash; no escalation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 6: Escalation -->
+    <div class="feat-section">
+      <div class="feat-row rev" style="direction:rtl">
+        <div class="feat-text slide-right" style="direction:ltr">
+          <span class="feat-label">Module 06</span>
+          <h3 class="feat-title">5-Level Escalation Engine</h3>
+          <p class="feat-gap">Anomalies raised, then forgotten.</p>
+          <div class="feat-bullets">
+            <p class="feat-bullet">5 severity levels: L1 (48h deadline) through L5 (immediate)</p>
+            <p class="feat-bullet">Auto-upgrades if unresolved past deadline — no human required</p>
+            <p class="feat-bullet">Escalations NEVER deleted — resolution requires written reason and evidence</p>
+            <p class="feat-bullet">Upgrade history permanently logged with timestamps</p>
+          </div>
+        </div>
+        <div class="feat-mockup slide-left" style="direction:ltr">
+          <div class="fm-title">Escalation — Auto-Upgraded</div>
+          <div class="esc-card">
+            <div class="esc-header">
+              <span class="esc-level">L2 — RUNTIME_INSTABILITY</span>
+              <span class="esc-deadline">12h remaining</span>
+            </div>
+            <div class="esc-desc">Three micro-runs detected on Gen A within 24h. Unresolved past L1 deadline.</div>
+            <span class="esc-upgrade">&#8679; Upgraded from L1 at 02:14 AM &mdash; Auto</span>
+          </div>
+          <div style="font-size:9px;color:var(--text-vmuted);font-family:'Inter',sans-serif;margin-top:8px;padding:6px;border:1px solid var(--border);border-radius:4px">
+            Resolution requires: written reason + supporting evidence.<br>This record is permanent.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HOW IT WORKS — Role Switcher
+══════════════════════════════════════════════════════════════════ -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="slide-in" style="margin-bottom:36px">
+      <span class="section-label">A day in the life</span>
+      <h2>One governance cycle. Four roles.</h2>
+    </div>
+
+    <div class="role-tabs">
+      <button class="role-tab active" data-role="supervisor">Supervisor</button>
+      <button class="role-tab" data-role="owner">Owner</button>
+      <button class="role-tab" data-role="founder">Founder</button>
+      <button class="role-tab" data-role="maintenance">Maintenance</button>
+    </div>
+
+    <!-- SUPERVISOR -->
+    <div class="role-content active" id="role-supervisor">
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">06:00 AM</div>
+          <div class="hiw-step-title">Morning anchor</div>
+          <p class="hiw-step-body">Supervisor opens the mobile PWA. The Morning Anchor form is ready. GPS is collected automatically — no manual entry. Photo of the fuel gauge taken. System validates the GPS is within Nigeria bounds. Both generators show Idle. Anchor submitted. System confirms: "Anchor accepted — 06:03 AM."</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-status-row"><span>Form</span><span class="fm-badge badge-green">READY</span></div>
+          <div class="fm-status-row"><span>GPS</span><span class="mono val-green" style="font-size:9px">6.4550°N, 3.3841°E ✓</span></div>
+          <div class="fm-status-row"><span>Gen A</span><span class="fm-badge badge-green">Idle</span></div>
+          <div class="fm-status-row"><span>Gen B</span><span class="fm-badge badge-green">Idle</span></div>
+          <div style="margin-top:10px;padding:8px;background:rgba(94,140,106,.1);border:1px solid rgba(94,140,106,.3);border-radius:6px;font-size:10px;color:var(--positive);font-family:'Inter',sans-serif">Anchor accepted &middot; 06:03 AM</div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">Through the day</div>
+          <div class="hiw-step-title">Runtime &amp; delivery</div>
+          <p class="hiw-step-body">Supervisor starts runtime sessions as generators come on. A diesel delivery arrives — supplier claims 3,000 litres. Supervisor logs claimed litres, measures with dip stick, enters measured litres, photographs the gauge. Variance: 2.4%. Within tolerance. Submission accepted.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-status-row"><span>Runtime &mdash; Gen B</span><span class="fm-badge badge-green">ACTIVE</span></div>
+          <div class="fm-status-row"><span>Duration</span><span class="mono">3:24:17</span></div>
+          <div class="fm-status-row"><span>Delivery claimed</span><span class="mono">3,000 L</span></div>
+          <div class="fm-status-row"><span>Measured</span><span class="mono">2,928 L</span></div>
+          <div class="fm-status-row"><span>Variance</span><span class="mono val-green">2.4% ✓</span></div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">10:00 PM</div>
+          <div class="hiw-step-title">Night anchor &amp; reconciliation</div>
+          <p class="hiw-step-body">Supervisor submits night anchor. System closes the day. Reconciliation runs automatically: expected consumption from runtime and burn rate vs. actual consumption from fuel readings. Result: 5.1% — Normal. No escalation created.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-status-row"><span>Night anchor</span><span class="fm-badge badge-green">SUBMITTED</span></div>
+          <div class="fm-status-row"><span>Reconciliation</span><span class="fm-badge badge-green">AUTO-RUN</span></div>
+          <div style="margin-top:10px;padding:10px;background:rgba(94,140,106,.1);border:1px solid rgba(94,140,106,.3);border-radius:6px;text-align:center">
+            <div class="mono" style="font-size:22px;color:var(--positive)">5.1%</div>
+            <div style="font-size:10px;color:var(--text-sec);font-family:'Inter',sans-serif;margin-top:4px">Normal &mdash; no escalation created</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OWNER -->
+    <div class="role-content" id="role-owner">
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">Morning review</div>
+          <div class="hiw-step-title">Risk score &amp; dashboard</div>
+          <p class="hiw-step-body">Owner opens the web dashboard. Today's risk score: 91/100. Green. Escalations: 0 open. Last reconciliation: Normal. No action needed. Everything is governed. The Owner sees outcomes, not process — the system handles the process.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-status-row"><span>Risk Score</span><span class="mono val-green" style="font-size:18px">91</span></div>
+          <div class="fm-status-row"><span>Escalations</span><span class="mono val-muted">0 open</span></div>
+          <div class="fm-status-row"><span>Reconciliation</span><span class="fm-badge badge-green">Normal · 5.1%</span></div>
+          <div class="fm-status-row"><span>Last delivery</span><span class="mono val-green">Δ 2.4% ✓</span></div>
+          <div class="fm-progress" style="margin-top:12px"><div class="fm-progress-fill" style="width:91%"></div></div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">When escalation exists</div>
+          <div class="hiw-step-title">Escalation alerts</div>
+          <p class="hiw-step-body">If any escalation is open, the Owner dashboard surfaces it immediately — level, description, deadline, and current status. The Owner can see the full history. Resolution is managed through the platform with a written record.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="esc-card" style="border-color:rgba(140,94,94,.4)">
+            <div class="esc-header">
+              <span class="esc-level">L2 &mdash; DELIVERY_VARIANCE</span>
+              <span class="esc-deadline">18h remaining</span>
+            </div>
+            <div class="esc-desc">Delivery variance of 14.2% on Aug 05. Exceeds 12% High-Risk threshold.</div>
+          </div>
+          <div style="font-size:10px;color:var(--text-sec);font-family:'Inter',sans-serif;padding:8px 0">Resolution assigned to site Supervisor. Evidence required.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOUNDER -->
+    <div class="role-content" id="role-founder">
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">Cross-site view</div>
+          <div class="hiw-step-title">Full system visibility</div>
+          <p class="hiw-step-body">Founder sees all sites simultaneously — risk scores, escalation counts, reconciliation status, and the complete audit log. Nothing is hidden, nothing is suppressed. Every write in the system is visible here.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-status-row"><span>Barcelona Hotel</span><span class="mono val-green">Score 91</span></div>
+          <div class="fm-status-row"><span>Site B</span><span class="mono val-amber">Score 62</span></div>
+          <div class="fm-status-row"><span>Active escalations</span><span class="mono">1 L2</span></div>
+          <div class="fm-status-row"><span>Audit entries today</span><span class="mono">34</span></div>
+          <div class="fm-status-row"><span>Enforcement Mode</span><span class="fm-badge badge-green">ACTIVE</span></div>
+        </div>
+      </div>
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">Control actions</div>
+          <div class="hiw-step-title">Lock rates &amp; activate enforcement</div>
+          <p class="hiw-step-body">Only the Founder can lock a burn rate, activate Enforcement Mode, or override an immutable record. Activation of Enforcement Mode requires typing the exact site name — this action is logged permanently and cannot be reversed via the API.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-status-row"><span>Burn Rate</span><span class="fm-badge badge-muted">UNLOCKED</span></div>
+          <div class="fm-status-row"><span>Baseline days</span><span class="mono val-green">5 / 5</span></div>
+          <div style="margin-top:10px;padding:10px;border:1px solid var(--border);border-radius:6px">
+            <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.1em">Type site name to activate Enforcement</div>
+            <div style="font-size:11px;color:var(--text-pri);border-bottom:1px solid var(--border);padding-bottom:6px;font-family:'Roboto Mono',monospace">Barcelona Hotel_</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINTENANCE -->
+    <div class="role-content" id="role-maintenance">
+      <div class="hiw-step">
+        <div>
+          <div class="hiw-step-label">Service logging</div>
+          <div class="hiw-step-title">Maintenance records</div>
+          <p class="hiw-step-body">Maintenance personnel log service events directly — oil changes, filter replacements, inspections, repairs. GPS and photo mandatory on every log. Records are immutable after 24 hours. Every maintenance entry contributes to the generator's compliance history.</p>
+        </div>
+        <div class="hiw-mock">
+          <div class="fm-title">Maintenance Log</div>
+          <div class="fm-field">
+            <div class="fm-label">Generator</div>
+            <div class="fm-val">Gen A — Barcelona Hotel</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">Service Category</div>
+            <div class="fm-val">Oil Change</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">GPS</div>
+            <div class="fm-val ok">6.4550° N, 3.3841° E ✓</div>
+          </div>
+          <div class="fm-field">
+            <div class="fm-label">Photo</div>
+            <div class="fm-val ok">&#128247; maintenance_0806.jpg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SECURITY & GOVERNANCE
+══════════════════════════════════════════════════════════════════ -->
+<section id="security">
+  <div class="container">
+    <div class="slide-in" style="margin-bottom:60px">
+      <span class="section-label">Security &amp; governance</span>
+      <h2>Built for the day someone asks to see the evidence.</h2>
+    </div>
+
+    <!-- The Audit Trail -->
+    <div class="sec-section">
+      <div class="slide-left">
+        <h3 class="sec-title">The Audit Trail</h3>
+        <p class="sec-body">Every write in Armina Sentinel creates an audit log — who, when, from where, what changed. The audit table is INSERT-ONLY at the database level. No one — not a developer, not the Founder, not Sync4 — can delete or alter an entry. It is permanent.</p>
+      </div>
+      <div class="sec-side slide-right">
+        <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.1em">Live audit stream</div>
+        <div class="audit-stream">
+          <div class="audit-row"><span class="ar-ts">06:03:12 &nbsp;</span><span class="ar-action">anchor.create</span><br><span class="ar-who">Supervisor · Barcelona Hotel · GPS verified</span></div>
+          <div class="audit-row"><span class="ar-ts">05:44:22 &nbsp;</span><span class="ar-action">runtime.stop</span><br><span class="ar-who">Supervisor · Gen B · 4h 12m · normal</span></div>
+          <div class="audit-row"><span class="ar-ts">01:29:08 &nbsp;</span><span class="ar-action">delivery.create</span><br><span class="ar-who">Supervisor · 2,800 L · Δ 2.4%</span></div>
+          <div class="audit-row"><span class="ar-ts">yesterday &nbsp;</span><span class="ar-action">reconciliation.run</span><br><span class="ar-who">System · Auto · 5.1% · Normal</span></div>
+          <div class="audit-row"><span class="ar-ts">yesterday &nbsp;</span><span class="ar-action">anchor.create</span><br><span class="ar-who">Supervisor · Night · Barcelona Hotel</span></div>
+        </div>
+        <div style="margin-top:10px;font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted)">INSERT-ONLY &nbsp;·&nbsp; No UPDATE &nbsp;·&nbsp; No DELETE &nbsp;·&nbsp; Ever</div>
+      </div>
+    </div>
+
+    <!-- Record Immutability -->
+    <div class="sec-section">
+      <div class="slide-left">
+        <h3 class="sec-title">Record Immutability</h3>
+        <p class="sec-body">Records become immutable 24 hours after creation. After that window, only the Founder can make a change. Any Founder change creates a record_version entry — the original is preserved, the change is recorded, the reason is required. Nothing is silently modified.</p>
+      </div>
+      <div class="sec-side slide-right">
+        <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">Record lifecycle</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-label"><strong>anchor.create</strong><br>Record created &middot; 06:03 AM &middot; Aug 06</div>
+          </div>
+          <div class="tl-item">
+            <div><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-label">Editable window &middot; 24 hours</div>
+          </div>
+          <div class="tl-item">
+            <div><div class="tl-dot locked"></div><div class="tl-line"></div></div>
+            <div class="tl-label"><strong>Immutable</strong><br>Locked at 06:03 AM &middot; Aug 07 &middot; Auto</div>
+          </div>
+          <div class="tl-item">
+            <div><div class="tl-dot override"></div></div>
+            <div class="tl-label"><strong style="color:var(--caution)">Founder override</strong><br>Requires reason &middot; Creates record_version &middot; Original preserved</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GPS & Photo Enforcement -->
+    <div class="sec-section">
+      <div class="slide-left">
+        <h3 class="sec-title">GPS &amp; Photo Enforcement</h3>
+        <p class="sec-body">GPS coordinates are validated server-side on every anchor, delivery, and maintenance log. Coordinates outside Nigeria (lat 4.0°–14.0°, lng 2.7°–15.0°) are rejected at the API level, not the frontend. Photos are stored in private cloud storage, accessible only via short-lived signed URLs.</p>
+      </div>
+      <div class="sec-side slide-right">
+        <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">GPS validation</div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Accepted range — latitude</span><span>4.0° – 14.0° N</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Accepted range — longitude</span><span>2.7° – 15.0° E</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Validation layer</span><span class="fm-badge badge-muted">Server-side API</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Photo storage</span><span class="fm-badge badge-muted">Private bucket</span></div>
+        <div class="fm-status-row"><span style="font-family:'Inter',sans-serif;font-size:10px">Photo access</span><span class="fm-badge badge-muted">Signed URLs only</span></div>
+        <div style="margin-top:10px;padding:8px;background:rgba(94,140,106,.08);border:1px solid rgba(94,140,106,.2);border-radius:6px;font-size:9px;font-family:'Inter',sans-serif;color:var(--positive)">6.4550° N, 3.3841° E &nbsp;·&nbsp; Within bounds &#10003;</div>
+        <div style="margin-top:6px;padding:8px;background:rgba(140,94,94,.08);border:1px solid rgba(140,94,94,.2);border-radius:6px;font-size:9px;font-family:'Inter',sans-serif;color:var(--risk)">51.5074° N, 0.1278° W &nbsp;·&nbsp; Rejected — outside Nigeria</div>
+      </div>
+    </div>
+
+    <!-- Shadow Mode → Enforcement Mode -->
+    <div class="sec-section">
+      <div class="slide-left">
+        <h3 class="sec-title">Shadow Mode &rarr; Enforcement Mode</h3>
+        <p class="sec-body">New sites begin in Shadow Mode. All calculations run, all records are created — but the Owner dashboard is suppressed and no notifications are sent. This is the 5-day calibration window. When ready, the Founder activates Enforcement Mode by typing the exact site name. This action is logged permanently and is irreversible via the API.</p>
+      </div>
+      <div class="sec-side slide-right">
+        <div class="toggle-demo">
+          <div class="td-row">
+            <span class="td-label">Owner dashboard</span>
+            <span class="td-badge shadow">SUPPRESSED · Shadow</span>
+          </div>
+          <div class="td-row">
+            <span class="td-label">Escalation emails</span>
+            <span class="td-badge shadow">SUPPRESSED · Shadow</span>
+          </div>
+          <div class="td-row">
+            <span class="td-label">Risk scores (Owner)</span>
+            <span class="td-badge shadow">SUPPRESSED · Shadow</span>
+          </div>
+          <div style="text-align:center;font-size:9px;color:var(--text-vmuted);font-family:'Inter',sans-serif;padding:8px 0">&darr; Founder activates Enforcement Mode &darr;</div>
+          <div class="td-row" style="border-color:rgba(94,140,106,.3)">
+            <span class="td-label">Owner dashboard</span>
+            <span class="td-badge enforce">LIVE · Enforcement</span>
+          </div>
+          <div class="td-row" style="border-color:rgba(94,140,106,.3)">
+            <span class="td-label">Escalation emails</span>
+            <span class="td-badge enforce">ACTIVE · Enforcement</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Escalation Promise -->
+    <div class="sec-section">
+      <div class="slide-left">
+        <h3 class="sec-title">The Escalation Promise</h3>
+        <p class="sec-body">An escalation created by Armina Sentinel is never deleted. It can be resolved, but resolution requires a written reason, and the resolution is itself recorded. If an escalation is not resolved within its deadline, the system upgrades it to the next level — automatically, without asking anyone.</p>
+      </div>
+      <div class="sec-side slide-right">
+        <div style="font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.1em">Escalation deadlines</div>
+        <div class="esc-timeline">
+          <div class="et-row"><span class="et-level">L1</span><div class="et-bar"><div class="et-bar-fill" style="width:100%;background:var(--neutral-data)"></div></div><span class="et-time">48h to resolve</span></div>
+          <div class="et-row"><span class="et-level">L2</span><div class="et-bar"><div class="et-bar-fill" style="width:75%"></div></div><span class="et-time">24h to resolve</span></div>
+          <div class="et-row"><span class="et-level">L3</span><div class="et-bar"><div class="et-bar-fill" style="width:50%"></div></div><span class="et-time">12h to resolve</span></div>
+          <div class="et-row"><span class="et-level">L4</span><div class="et-bar"><div class="et-bar-fill" style="width:25%"></div></div><span class="et-time">4h to resolve</span></div>
+          <div class="et-row"><span class="et-level">L5</span><div class="et-bar"><div class="et-bar-fill" style="width:8%"></div></div><span class="et-time">Immediate</span></div>
+        </div>
+        <div style="margin-top:10px;font-size:9px;font-family:'Inter',sans-serif;color:var(--text-muted)">Unresolved past deadline &rarr; auto-upgraded &rarr; max L5 &rarr; never deleted</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     REQUEST DEMO
+══════════════════════════════════════════════════════════════════ -->
+<section id="request-demo">
+  <div class="container">
+    <div class="demo-layout-grid">
+
+      <!-- Form -->
+      <div>
+        <span class="section-label">Get started</span>
+        <h2 style="margin-bottom:8px">See Armina Sentinel<br>in your hotel.</h2>
+        <p style="font-size:13px;color:var(--text-sec);margin-bottom:32px;line-height:1.7">We walk you through a live demo using a real site configuration — morning anchor to night anchor, reconciliation, escalation, the full cycle.</p>
+
+        <div class="demo-form-wrap">
+          <form id="demo-form">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label" for="f-name">Full Name</label>
+                <input class="form-input" type="text" id="f-name" placeholder="Your full name" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-hotel">Hotel Name</label>
+                <input class="form-input" type="text" id="f-hotel" placeholder="Your hotel" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-email">Email Address</label>
+                <input class="form-input" type="email" id="f-email" placeholder="you@hotel.com" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="f-phone">Phone Number</label>
+                <input class="form-input" type="tel" id="f-phone" placeholder="+234 ...">
+              </div>
+              <div class="form-field full">
+                <label class="form-label" for="f-gens">Number of Generators</label>
+                <select class="form-input" id="f-gens">
+                  <option value="">Select count</option>
+                  <option>1 – 2</option>
+                  <option>3 – 5</option>
+                  <option>6 – 10</option>
+                  <option>10+</option>
+                </select>
+              </div>
+              <div class="form-field full">
+                <label class="form-label" for="f-msg">Message (optional)</label>
+                <textarea class="form-input" id="f-msg" placeholder="Anything you'd like us to know before the demo..."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="form-submit">Request My Demo</button>
+          </form>
+          <div id="form-success">
+            <div style="font-size:28px;margin-bottom:16px;color:var(--positive)"><i class="ti ti-circle-check"></i></div>
+            <h3>Request received.</h3>
+            <p>Expect a message from the Sync4 team within 4 business hours.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust signals -->
+      <div class="trust-signals">
+        <div class="trust-item slide-in">
+          <div class="ti-icon"><i class="ti ti-rocket"></i></div>
+          <div>
+            <div class="ti-title">Live in under 2 weeks</div>
+            <p class="ti-desc">From contract to first enforcement mode — site configuration, onboarding, and calibration included.</p>
+          </div>
+        </div>
+        <div class="trust-item slide-in">
+          <div class="ti-icon"><i class="ti ti-headset"></i></div>
+          <div>
+            <div class="ti-title">3 months support included</div>
+            <p class="ti-desc">Critical issues acknowledged in 4 hours, resolved in 24. Major issues within 5 business days. No extra charge.</p>
+          </div>
+        </div>
+        <div class="trust-item slide-in">
+          <div class="ti-icon"><i class="ti ti-lock"></i></div>
+          <div>
+            <div class="ti-title">Your data, your infrastructure</div>
+            <p class="ti-desc">All production accounts — hosting, database, storage — are under your credentials. Full admin transfer at handoff.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-logo">ARMINA SENTINEL</span>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#security">Security</a>
+        <a href="#request-demo">Request Demo</a>
+      </div>
+      <span class="footer-credit">Built by Sync4 Technologies &nbsp;&middot;&nbsp; &copy; 2026 Armina Sentinel</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════════════ -->
+<script>
+/* ─── THEME TOGGLE ──────────────────────────────────────────────── */
+const html      = document.documentElement;
+const themeBtn  = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+let theme = localStorage.getItem('as-theme') || 'dark';
+
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  themeIcon.className = t === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
+  localStorage.setItem('as-theme', t);
+}
+applyTheme(theme);
+themeBtn.addEventListener('click', () => {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  applyTheme(theme);
+});
+
+/* ─── DATE IN DASHBOARD ─────────────────────────────────────────── */
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const now = new Date();
+document.getElementById('dc-date').textContent =
+  months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+
+/* ─── COUNTER ANIMATION ─────────────────────────────────────────── */
+function animateCount(el, target, duration, prefix, suffix) {
+  let startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    const progress = Math.min((ts - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = Math.round(eased * target);
+    el.innerHTML = (prefix || '') + val + (suffix || '');
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ─── HERO DASHBOARD ANIMATION ──────────────────────────────────── */
+const dcScore = document.getElementById('dc-score');
+const dcBar   = document.getElementById('dc-bar');
+animateCount(dcScore, 91, 1500, '', '');
+setTimeout(() => { dcBar.style.width = '91%'; }, 100);
+
+/* ─── SCROLL-TRIGGERED METRIC COUNTERS ──────────────────────────── */
+const metricsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    if (el.dataset.counted) return;
+    el.dataset.counted = '1';
+    const target = parseInt(el.dataset.target, 10);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    animateCount(el, target, 1500, prefix, suffix);
+    metricsObserver.unobserve(el);
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('[data-target]').forEach(el => metricsObserver.observe(el));
+
+/* ─── FROSTED NAV ───────────────────────────────────────────────── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 80);
+}, { passive: true });
+
+/* ─── MOBILE MENU ───────────────────────────────────────────────── */
+const hamburger  = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobClose   = document.getElementById('mob-close');
+hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+mobClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
+
+/* ─── ACTIVE NAV LINKS ──────────────────────────────────────────── */
+const navLinks = document.querySelectorAll('[data-nav]');
+const sectionsToWatch = ['home','features','how-it-works','security','request-demo'];
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.dataset.nav === entry.target.id);
+      });
+    }
+  });
+}, { threshold: 0.4 });
+sectionsToWatch.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) navObserver.observe(el);
+});
+
+/* ─── SLIDE-IN ANIMATIONS ───────────────────────────────────────── */
+const slideObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      slideObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.slide-in, .slide-left, .slide-right').forEach(el => {
+  slideObserver.observe(el);
+});
+
+/* ─── PHONE MOCKUP ANIMATION ────────────────────────────────────── */
+const phoneStates = [
+  // State 0: Form open, initial
+  `<div class="phone-state">
+    <div class="ps-header">Morning Anchor</div>
+    <div class="ps-field"><div class="ps-field-label">GPS Location</div><div class="ps-field-val" style="color:var(--text-muted)">Acquiring location...</div></div>
+    <div class="ps-field"><div class="ps-field-label">Photo Evidence</div><div class="ps-photo-thumb">Tap to capture</div></div>
+    <div class="ps-field"><div class="ps-field-label">Generator Status</div><div class="ps-gen-row"><div class="ps-gen">Gen A</div><div class="ps-gen">Gen B</div></div></div>
+    <div class="ps-field"><div class="ps-field-label">Fuel Reading (L)</div><div class="ps-field-val" style="color:var(--text-vmuted)">—</div></div>
+    <div class="ps-submit">Submit Anchor</div>
+  </div>`,
+  // State 1: GPS acquired
+  `<div class="phone-state">
+    <div class="ps-header">Morning Anchor</div>
+    <div class="ps-field"><div class="ps-field-label">GPS Location</div><div class="ps-field-val gps-ok">6.4550° N, 3.3841° E &nbsp;✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Photo Evidence</div><div class="ps-photo-thumb">Tap to capture</div></div>
+    <div class="ps-field"><div class="ps-field-label">Generator Status</div><div class="ps-gen-row"><div class="ps-gen">Gen A</div><div class="ps-gen">Gen B</div></div></div>
+    <div class="ps-field"><div class="ps-field-label">Fuel Reading (L)</div><div class="ps-field-val" style="color:var(--text-vmuted)">—</div></div>
+    <div class="ps-submit">Submit Anchor</div>
+  </div>`,
+  // State 2: Photo added
+  `<div class="phone-state">
+    <div class="ps-header">Morning Anchor</div>
+    <div class="ps-field"><div class="ps-field-label">GPS Location</div><div class="ps-field-val gps-ok">6.4550° N, 3.3841° E &nbsp;✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Photo Evidence</div><div class="ps-photo-thumb loaded">📷 gauge_0603.jpg ✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Generator Status</div><div class="ps-gen-row"><div class="ps-gen">Gen A</div><div class="ps-gen">Gen B</div></div></div>
+    <div class="ps-field"><div class="ps-field-label">Fuel Reading (L)</div><div class="ps-field-val" style="color:var(--text-vmuted)">—</div></div>
+    <div class="ps-submit">Submit Anchor</div>
+  </div>`,
+  // State 3: Generators validated
+  `<div class="phone-state">
+    <div class="ps-header">Morning Anchor</div>
+    <div class="ps-field"><div class="ps-field-label">GPS Location</div><div class="ps-field-val gps-ok">6.4550° N, 3.3841° E &nbsp;✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Photo Evidence</div><div class="ps-photo-thumb loaded">📷 gauge_0603.jpg ✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Generator Status</div><div class="ps-gen-row"><div class="ps-gen idle">Gen A ✓</div><div class="ps-gen idle">Gen B ✓</div></div></div>
+    <div class="ps-field"><div class="ps-field-label">Fuel Reading (L)</div><div class="ps-field-val" style="color:var(--text-vmuted)">—</div></div>
+    <div class="ps-submit">Submit Anchor</div>
+  </div>`,
+  // State 4: Fuel reading entered
+  `<div class="phone-state">
+    <div class="ps-header">Morning Anchor</div>
+    <div class="ps-field"><div class="ps-field-label">GPS Location</div><div class="ps-field-val gps-ok">6.4550° N, 3.3841° E &nbsp;✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Photo Evidence</div><div class="ps-photo-thumb loaded">📷 gauge_0603.jpg ✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Generator Status</div><div class="ps-gen-row"><div class="ps-gen idle">Gen A ✓</div><div class="ps-gen idle">Gen B ✓</div></div></div>
+    <div class="ps-field"><div class="ps-field-label">Fuel Reading (L)</div><div class="ps-field-val">2,450 L</div></div>
+    <div class="ps-submit active">Submit Anchor</div>
+  </div>`,
+  // State 5: Submitting
+  `<div class="phone-state">
+    <div class="ps-header">Morning Anchor</div>
+    <div class="ps-field"><div class="ps-field-label">GPS Location</div><div class="ps-field-val gps-ok">6.4550° N, 3.3841° E &nbsp;✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Photo Evidence</div><div class="ps-photo-thumb loaded">📷 gauge_0603.jpg ✓</div></div>
+    <div class="ps-field"><div class="ps-field-label">Generator Status</div><div class="ps-gen-row"><div class="ps-gen idle">Gen A ✓</div><div class="ps-gen idle">Gen B ✓</div></div></div>
+    <div class="ps-field"><div class="ps-field-label">Fuel Reading (L)</div><div class="ps-field-val">2,450 L</div></div>
+    <div class="ps-submit" style="background:var(--border-strong);color:var(--text-sec)">Submitting...</div>
+  </div>`,
+  // State 6: Success
+  `<div class="phone-state">
+    <div class="ps-success">
+      <div class="ps-success-icon">✓</div>
+      <div class="ps-success-title">Anchor Submitted</div>
+      <div class="ps-success-detail">06:03 AM &nbsp;·&nbsp; Aug 06, 2026<br>Day 4 of 5 — Calibration<br><br>Barcelona Hotel Abuja</div>
+    </div>
+  </div>`,
+];
+
+let phoneIdx = 0;
+const phoneScreen = document.getElementById('phone-screen');
+function renderPhone() {
+  phoneScreen.innerHTML = phoneStates[phoneIdx];
+}
+renderPhone();
+setInterval(() => {
+  phoneIdx = (phoneIdx + 1) % phoneStates.length;
+  renderPhone();
+}, 1250);
+
+/* ─── RUNTIME TIMER TICK ────────────────────────────────────────── */
+function tickTimer() {
+  const el = document.getElementById('runtime-timer');
+  if (!el) return;
+  const parts = el.textContent.split(':').map(Number);
+  let [h, m, s] = parts;
+  s++;
+  if (s >= 60) { s = 0; m++; }
+  if (m >= 60) { m = 0; h++; }
+  el.textContent = `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+setInterval(tickTimer, 1000);
+
+/* ─── RECONCILIATION CYCLING ────────────────────────────────────── */
+const reconStates = [
+  { cls: 'normal',   val: '5.1%',  label: 'Normal — no escalation' },
+  { cls: 'variance', val: '9.8%',  label: 'Variance — monitoring' },
+  { cls: 'highrisk', val: '14.3%', label: 'High-Risk — L3 created' },
+];
+let reconIdx = 0;
+function cycleRecon() {
+  const el = document.getElementById('recon-display');
+  if (!el) return;
+  reconIdx = (reconIdx + 1) % reconStates.length;
+  const s = reconStates[reconIdx];
+  el.className = 'recon-state ' + s.cls;
+  el.innerHTML = `<div class="recon-val mono">${s.val}</div><div class="recon-label">${s.label}</div>`;
+}
+setInterval(cycleRecon, 2500);
+
+/* ─── ROLE SWITCHER ─────────────────────────────────────────────── */
+const roleTabs = document.querySelectorAll('.role-tab');
+roleTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    roleTabs.forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.role-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    const role = tab.dataset.role;
+    const content = document.getElementById('role-' + role);
+    if (content) content.classList.add('active');
+  });
+});
+
+/* ─── FORM SUBMISSION ───────────────────────────────────────────── */
+document.getElementById('demo-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+});
+
+/* ─── SMOOTH SCROLL FOR ALL ANCHOR LINKS ────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      const offset = target.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
