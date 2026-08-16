@@ -264,8 +264,8 @@ section{padding:128px 0}
 
 /* ─── CTA STRIP ────────────────────────────────────────────────── */
 #cta-home{padding:130px 0;text-align:center;position:relative}
-#cta-home::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(to right,transparent,var(--accent-border),transparent)}
-#cta-home::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:80px;background:radial-gradient(ellipse at top,rgba(197,164,106,0.06) 0%,transparent 70%);pointer-events:none}
+#cta-home::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(600px,90%);height:1px;background:linear-gradient(to right,transparent,var(--accent-border),transparent)}
+#cta-home::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(300px,60%);height:80px;background:radial-gradient(ellipse at top,rgba(197,164,106,0.06) 0%,transparent 70%);pointer-events:none}
 #cta-home h2{margin-bottom:28px}
 .cta-btns{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
 
@@ -276,6 +276,8 @@ section{padding:128px 0}
 .features-intro p{font-size:15px;color:var(--text-sec)}
 .feat-section{padding:72px 0;border-top:1px solid var(--border)}
 .feat-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.feat-row.rev .feat-text{order:2}
+.feat-row.rev .feat-mockup{order:1}
 .feat-text{}
 .feat-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-vmuted);font-family:'Inter',sans-serif;display:block;margin-bottom:12px}
 .feat-title{margin-bottom:10px}
@@ -422,7 +424,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
   .form-grid{grid-template-columns:1fr}
   .nav-links,.nav-right .nav-cta,.nav-right .theme-toggle{display:none}
   .nav-hamburger{display:flex}
-  .feat-row.rev{direction:ltr}
+  .feat-row.rev .feat-text,.feat-row.rev .feat-mockup{order:0}
   .demo-layout{flex-direction:column;align-items:center}
 }
 @media(max-width:600px){
@@ -935,8 +937,8 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
 
     <!-- Feature 2: Runtime -->
     <div class="feat-section">
-      <div class="feat-row rev" style="direction:rtl">
-        <div class="feat-text slide-right" style="direction:ltr">
+      <div class="feat-row rev">
+        <div class="feat-text slide-right">
           <span class="feat-label">Module 02</span>
           <h3 class="feat-title">Runtime Tracking</h3>
           <p class="feat-gap">Unverifiable equipment runtime logs.</p>
@@ -946,7 +948,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
             <p class="feat-bullet">Irregular patterns trigger an escalation without anyone flagging it</p>
           </div>
         </div>
-        <div class="feat-mockup slide-left" style="direction:ltr">
+        <div class="feat-mockup slide-left">
           <div class="fm-title">Active Runtime Session</div>
           <div class="fm-status-row">
             <span>Asset</span><span class="mono">Unit B</span>
@@ -1001,8 +1003,8 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
 
     <!-- Feature 4: Burn Rate -->
     <div class="feat-section">
-      <div class="feat-row rev" style="direction:rtl">
-        <div class="feat-text slide-right" style="direction:ltr">
+      <div class="feat-row rev">
+        <div class="feat-text slide-right">
           <span class="feat-label">Module 04</span>
           <h3 class="feat-title">Consumption Calibration</h3>
           <p class="feat-gap">No baseline to measure actual consumption against.</p>
@@ -1012,7 +1014,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
             <p class="feat-bullet">Ongoing drift is monitored — nothing adjusts silently</p>
           </div>
         </div>
-        <div class="feat-mockup slide-left" style="direction:ltr">
+        <div class="feat-mockup slide-left">
           <div class="fm-title">Rate Configuration</div>
           <div class="fm-status-row">
             <span>Baseline</span><span class="mono val-green">Complete</span>
@@ -1065,8 +1067,8 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
 
     <!-- Feature 6: Escalation -->
     <div class="feat-section">
-      <div class="feat-row rev" style="direction:rtl">
-        <div class="feat-text slide-right" style="direction:ltr">
+      <div class="feat-row rev">
+        <div class="feat-text slide-right">
           <span class="feat-label">Module 06</span>
           <h3 class="feat-title">Escalation Engine</h3>
           <p class="feat-gap">Anomalies raised, then forgotten.</p>
@@ -1076,7 +1078,7 @@ footer{padding:40px 0;border-top:1px solid var(--border)}
             <p class="feat-bullet">Never deleted. Resolution requires a written reason and evidence</p>
           </div>
         </div>
-        <div class="feat-mockup slide-left" style="direction:ltr">
+        <div class="feat-mockup slide-left">
           <div class="fm-title">Escalation — Auto-Upgraded</div>
           <div class="esc-card">
             <div class="esc-header">
