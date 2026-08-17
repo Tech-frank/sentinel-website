@@ -406,9 +406,9 @@ textarea.form-input{resize:vertical;min-height:90px;line-height:1.6}
 .ti-desc{font-size:13.5px;color:var(--text-sec);line-height:1.7}
 
 /* ─── FLOATING CTA ─────────────────────────────────────────────── */
-.floating-cta{position:fixed;bottom:24px;right:24px;z-index:998;padding:13px 22px;background:var(--btn-bg);color:var(--btn-text);border-radius:30px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;box-shadow:0 10px 28px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .3s,transform .3s}
+.floating-cta{position:fixed;bottom:max(24px,calc(env(safe-area-inset-bottom) + 16px));right:max(24px,env(safe-area-inset-right));z-index:998;padding:13px 22px;max-width:calc(100vw - 32px);box-sizing:border-box;overflow:hidden;background:var(--btn-bg);color:var(--btn-text);border-radius:30px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;box-shadow:0 10px 28px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;text-overflow:ellipsis;opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .3s,transform .3s}
 .floating-cta.visible{opacity:1;transform:none;pointer-events:auto}
-@media(max-width:600px){.floating-cta{left:16px;right:16px;bottom:16px;justify-content:center}}
+@media(max-width:600px){.floating-cta{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));bottom:max(16px,calc(env(safe-area-inset-bottom) + 12px));max-width:calc(100vw - 32px);justify-content:center}}
 
 /* ─── LOSS CALCULATOR ──────────────────────────────────────────── */
 #calculator{padding:130px 0;background:var(--card-subtle);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
